@@ -56,4 +56,4 @@ const swapReducer = (state, action) => {
     }
 }
 
-export const useBuilder = () => React.useReducer(swapReducer, { currencies: [] });
+export const useBuilder = () => React.useReducer(swapReducer, { currencies: [], amount: 1 });
