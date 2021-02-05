@@ -1,0 +1,44 @@
+{
+  "name": "ark-changenow-v3",
+  "version": "0.0.1",
+  "description": "ChangeNOW exchange on ARK Desktop Wallet",
+  "main": "dist/ark-changenow-v3.cjs.js",
+  "author": "Lucio <lucio@ark.io>",
+  "license": "MIT",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ark-ecosystem-desktop-plugins/ark-change-now-v3.git"
+  },
+  "desktop-wallet": {
+    "title": "ChangeNOW Exchange",
+    "logo": "https://raw.githubusercontent.com/ChangeNow-io/ARKPlugin/master/logo.png",
+    "categories": [
+      "exchange"
+    ],
+    "permissions": [
+      "LAUNCH"
+    ],
+    "minimumVersion": "3.0"
+  },
+  "keywords": [
+    "utility",
+    "explorer",
+    "@arkecosystem",
+    "desktop-wallet",
+    "plugin"
+  ],
+  "homepage": "https://github.com/ark-ecosystem-desktop-plugins/ark-change-now-v3",
+  "scripts": {
+    "prepublishOnly": "yarn build",
+    "build": "preconstruct build",
+    "watch": "preconstruct watch"
+  },
+  "dependencies": {
+    "react": "^17.0.1"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.12.10",
+    "@preconstruct/cli": "^2.0.2"
+  }
+}
