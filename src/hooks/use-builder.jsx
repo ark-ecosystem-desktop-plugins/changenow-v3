@@ -35,10 +35,10 @@ const swapReducer = (state, action) => {
                 amount: action.amount
             }
         }
-        case "equivalentAmount": {
+        case "estimatedAmount": {
             return {
                 ...state,
-                equivalentAmount: action.equivalentAmount
+                estimatedAmount: action.estimatedAmount
             }
         }
         case "recipient": {

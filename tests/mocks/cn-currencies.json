@@ -1,0 +1,2132 @@
+[
+	{
+		"ticker": "btc",
+		"name": "Bitcoin",
+		"image": "https://changenow.io/images/sprite/currencies/btc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "eth",
+		"name": "Ethereum",
+		"image": "https://changenow.io/images/sprite/currencies/eth.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "usdt",
+		"name": "Tether (OMNI)",
+		"image": "https://changenow.io/images/sprite/currencies/usdt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "usdterc20",
+		"name": "Tether (ERC20)",
+		"image": "https://changenow.io/images/sprite/currencies/usdterc20.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": true,
+		"isStable": true,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "usdttrc20",
+		"name": "Tether (TRC20)",
+		"image": "https://changenow.io/images/sprite/currencies/usdttrc20.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "xrp",
+		"name": "Ripple",
+		"image": "https://changenow.io/images/sprite/currencies/xrp.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dot",
+		"name": "Polkadot",
+		"image": "https://changenow.io/images/sprite/currencies/dot.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ada",
+		"name": "Cardano",
+		"image": "https://changenow.io/images/sprite/currencies/ada.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "link",
+		"name": "Chainlink",
+		"image": "https://changenow.io/images/sprite/currencies/link.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ltc",
+		"name": "Litecoin",
+		"image": "https://changenow.io/images/sprite/currencies/ltc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "bnb",
+		"name": "Binance Coin (ERC20)",
+		"image": "https://changenow.io/images/sprite/currencies/bnb.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bnbmainnet",
+		"name": "Binance Coin Mainnet",
+		"image": "https://changenow.io/images/sprite/currencies/bnbmainnet.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "bch",
+		"name": "Bitcoin Cash",
+		"image": "https://changenow.io/images/sprite/currencies/bch.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "xlm",
+		"name": "Stellar",
+		"image": "https://changenow.io/images/sprite/currencies/xlm.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "usdc",
+		"name": "USD Coin",
+		"image": "https://changenow.io/images/sprite/currencies/usdc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "aave",
+		"name": "Aave",
+		"image": "https://changenow.io/images/sprite/currencies/aave.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "uni",
+		"name": "Uniswap",
+		"image": "https://changenow.io/images/sprite/currencies/uni.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "doge",
+		"name": "Dogecoin",
+		"image": "https://changenow.io/images/sprite/currencies/doge.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "wbtc",
+		"name": "Wrapped Bitcoin",
+		"image": "https://changenow.io/images/sprite/currencies/wbtc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bsv",
+		"name": "Bitcoin SV",
+		"image": "https://changenow.io/images/sprite/currencies/bsv.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "eos",
+		"name": "EOS",
+		"image": "https://changenow.io/images/sprite/currencies/eos.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "xmr",
+		"name": "Monero",
+		"image": "https://changenow.io/images/sprite/currencies/xmr.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "trx",
+		"name": "TRON",
+		"image": "https://changenow.io/images/sprite/currencies/trx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "xem",
+		"name": "NEM",
+		"image": "https://changenow.io/images/sprite/currencies/xem.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "theta",
+		"name": "THETA",
+		"image": "https://changenow.io/images/sprite/currencies/theta.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "xtz",
+		"name": "Tezos",
+		"image": "https://changenow.io/images/sprite/currencies/xtz.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": true,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "snx",
+		"name": "Synthetix Network Token",
+		"image": "https://changenow.io/images/sprite/currencies/snx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "mkr",
+		"name": "Maker",
+		"image": "https://changenow.io/images/sprite/currencies/mkr.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "comp",
+		"name": "Compound",
+		"image": "https://changenow.io/images/sprite/currencies/comp.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "atom",
+		"name": "Cosmos",
+		"image": "https://changenow.io/images/sprite/currencies/atom.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "sushi",
+		"name": "SushiSwap",
+		"image": "https://changenow.io/images/sprite/currencies/sushi.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "vet",
+		"name": "VeChain",
+		"image": "https://changenow.io/images/sprite/currencies/vet.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dai",
+		"name": "Dai",
+		"image": "https://changenow.io/images/sprite/currencies/dai.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "neo",
+		"name": "Neo",
+		"image": "https://changenow.io/images/sprite/currencies/neo.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "uma",
+		"name": "UMA",
+		"image": "https://changenow.io/images/sprite/currencies/uma.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "busd",
+		"name": "Binance USD (ERC20)",
+		"image": "https://changenow.io/images/sprite/currencies/busd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ht",
+		"name": "Huobi Token",
+		"image": "https://changenow.io/images/sprite/currencies/ht.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "cro",
+		"name": "Crypto.Com",
+		"image": "https://changenow.io/images/sprite/currencies/cro.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "egld",
+		"name": "Elrond",
+		"image": "https://changenow.io/images/sprite/currencies/egld.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ftt",
+		"name": "FTX Token",
+		"image": "https://changenow.io/images/sprite/currencies/ftt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "luna",
+		"name": "Terra",
+		"image": "https://changenow.io/images/sprite/currencies/luna.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "iota",
+		"name": "IOTA",
+		"image": "https://changenow.io/images/sprite/currencies/iota.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "cel",
+		"name": "Celsius",
+		"image": "https://changenow.io/images/sprite/currencies/cel.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dash",
+		"name": "Dash",
+		"image": "https://changenow.io/images/sprite/currencies/dash.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "fil",
+		"name": "Filecoin",
+		"image": "https://changenow.io/images/sprite/currencies/fil.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "algo",
+		"name": "Algorand",
+		"image": "https://changenow.io/images/sprite/currencies/algo.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "zec",
+		"name": "Zcash",
+		"image": "https://changenow.io/images/sprite/currencies/zec.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "ksm",
+		"name": "Kusama",
+		"image": "https://changenow.io/images/sprite/currencies/ksm.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dcr",
+		"name": "Decred",
+		"image": "https://changenow.io/images/sprite/currencies/dcr.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "zrx",
+		"name": "0x",
+		"image": "https://changenow.io/images/sprite/currencies/zrx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "yfi",
+		"name": "yearn.finance",
+		"image": "https://changenow.io/images/sprite/currencies/yfi.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "etc",
+		"name": "Ethereum Classic",
+		"image": "https://changenow.io/images/sprite/currencies/etc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "zil",
+		"name": "Zilliqa",
+		"image": "https://changenow.io/images/sprite/currencies/zil.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ren",
+		"name": "Ren",
+		"image": "https://changenow.io/images/sprite/currencies/ren.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "nexo",
+		"name": "Nexo",
+		"image": "https://changenow.io/images/sprite/currencies/nexo.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "chsb",
+		"name": "SwissBorg",
+		"image": "https://changenow.io/images/sprite/currencies/chsb.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "waves",
+		"name": "Waves",
+		"image": "https://changenow.io/images/sprite/currencies/waves.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "lrc",
+		"name": "Loopring",
+		"image": "https://changenow.io/images/sprite/currencies/lrc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "omg",
+		"name": "OMG Network",
+		"image": "https://changenow.io/images/sprite/currencies/omg.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "hbar",
+		"name": "Hedera Hashgraph",
+		"image": "https://changenow.io/images/sprite/currencies/hbar.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bqx",
+		"name": "Ethos",
+		"image": "https://changenow.io/images/sprite/currencies/bqx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ont",
+		"name": "Ontology",
+		"image": "https://changenow.io/images/sprite/currencies/ont.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bat",
+		"name": "Basic Attention Token",
+		"image": "https://changenow.io/images/sprite/currencies/bat.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "nano",
+		"name": "Nano",
+		"image": "https://changenow.io/images/sprite/currencies/nano.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dgb",
+		"name": "DigiByte",
+		"image": "https://changenow.io/images/sprite/currencies/dgb.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "icx",
+		"name": "ICON",
+		"image": "https://changenow.io/images/sprite/currencies/icx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "husd",
+		"name": "HUSD",
+		"image": "https://changenow.io/images/sprite/currencies/husd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "btt",
+		"name": "BitTorrent",
+		"image": "https://changenow.io/images/sprite/currencies/btt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "qnt",
+		"name": "Quant",
+		"image": "https://changenow.io/images/sprite/currencies/qnt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "sc",
+		"name": "Siacoin",
+		"image": "https://changenow.io/images/sprite/currencies/sc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "zen",
+		"name": "Horizen",
+		"image": "https://changenow.io/images/sprite/currencies/zen.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "knc",
+		"name": "Kyber Network",
+		"image": "https://changenow.io/images/sprite/currencies/knc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "tusd",
+		"name": "TrueUSD",
+		"image": "https://changenow.io/images/sprite/currencies/tusd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "okb",
+		"name": "OKB",
+		"image": "https://changenow.io/images/sprite/currencies/okb.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "qtum",
+		"name": "QTUM",
+		"image": "https://changenow.io/images/sprite/currencies/qtum.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ocean",
+		"name": "Ocean Protocol",
+		"image": "https://changenow.io/images/sprite/currencies/ocean.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "enj",
+		"name": "Enjin Coin",
+		"image": "https://changenow.io/images/sprite/currencies/enj.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "fun",
+		"name": "FunFair",
+		"image": "https://changenow.io/images/sprite/currencies/fun.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "iost",
+		"name": "Internet of Services",
+		"image": "https://changenow.io/images/sprite/currencies/iost.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bnt",
+		"name": "BancorNetworkToken",
+		"image": "https://changenow.io/images/sprite/currencies/bnt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "xvg",
+		"name": "Verge",
+		"image": "https://changenow.io/images/sprite/currencies/xvg.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "mana",
+		"name": "Decentraland",
+		"image": "https://changenow.io/images/sprite/currencies/mana.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "band",
+		"name": "Band (ERC20)",
+		"image": "https://changenow.io/images/sprite/currencies/band.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bandmainnet",
+		"name": "Band (Mainnet)",
+		"image": "https://changenow.io/images/sprite/currencies/bandmainnet.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bal",
+		"name": "Balancer",
+		"image": "https://changenow.io/images/sprite/currencies/bal.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "rep",
+		"name": "Augur",
+		"image": "https://changenow.io/images/sprite/currencies/rep.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "pax",
+		"name": "Paxos Standard Token",
+		"image": "https://changenow.io/images/sprite/currencies/pax.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": true
+	},
+	{
+		"ticker": "rvn",
+		"name": "Ravencoin",
+		"image": "https://changenow.io/images/sprite/currencies/rvn.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "matic",
+		"name": "Matic",
+		"image": "https://changenow.io/images/sprite/currencies/matic.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ant",
+		"name": "Aragon",
+		"image": "https://changenow.io/images/sprite/currencies/ant.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "lsk",
+		"name": "Lisk",
+		"image": "https://changenow.io/images/sprite/currencies/lsk.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "btg",
+		"name": "Bitcoin Gold",
+		"image": "https://changenow.io/images/sprite/currencies/btg.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "snt",
+		"name": "Status",
+		"image": "https://changenow.io/images/sprite/currencies/snt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "oxt",
+		"name": "Orchid",
+		"image": "https://changenow.io/images/sprite/currencies/oxt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "srm",
+		"name": "Serum",
+		"image": "https://changenow.io/images/sprite/currencies/srm.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "sxp",
+		"name": "Swipe",
+		"image": "https://changenow.io/images/sprite/currencies/sxp.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "nmr",
+		"name": "Numeraire",
+		"image": "https://changenow.io/images/sprite/currencies/nmr.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ubt",
+		"name": "Unibright",
+		"image": "https://changenow.io/images/sprite/currencies/ubt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "hot",
+		"name": "Holo",
+		"image": "https://changenow.io/images/sprite/currencies/hot.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "utk",
+		"name": "Utrust",
+		"image": "https://changenow.io/images/sprite/currencies/utk.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "bcd",
+		"name": "Bitcoin Diamond",
+		"image": "https://changenow.io/images/sprite/currencies/bcd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "storj",
+		"name": "Storj",
+		"image": "https://changenow.io/images/sprite/currencies/storj.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "fet",
+		"name": "Fetch",
+		"image": "https://changenow.io/images/sprite/currencies/fet.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "cvc",
+		"name": "Civic",
+		"image": "https://changenow.io/images/sprite/currencies/cvc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "rlc",
+		"name": "iExec",
+		"image": "https://changenow.io/images/sprite/currencies/rlc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "eur",
+		"name": "Euro",
+		"image": "https://changenow.io/images/sprite/currencies/eur.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "npxs",
+		"name": "Pundi X",
+		"image": "https://changenow.io/images/sprite/currencies/npxs.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ppt",
+		"name": "Populous",
+		"image": "https://changenow.io/images/sprite/currencies/ppt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "elf",
+		"name": "aelf",
+		"image": "https://changenow.io/images/sprite/currencies/elf.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ardr",
+		"name": "Ardor",
+		"image": "https://changenow.io/images/sprite/currencies/ardr.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "agi",
+		"name": "SingularityNET",
+		"image": "https://changenow.io/images/sprite/currencies/agi.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "kmd",
+		"name": "Komodo",
+		"image": "https://changenow.io/images/sprite/currencies/kmd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "steem",
+		"name": "Steem",
+		"image": "https://changenow.io/images/sprite/currencies/steem.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ava",
+		"name": "Travala.com",
+		"image": "https://changenow.io/images/sprite/currencies/ava.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "scrt",
+		"name": "Secret",
+		"image": "https://changenow.io/images/sprite/currencies/scrt.svg",
+		"hasExternalId": true,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dnt",
+		"name": "district0x",
+		"image": "https://changenow.io/images/sprite/currencies/dnt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "yfii",
+		"name": "YFII.finance",
+		"image": "https://changenow.io/images/sprite/currencies/yfii.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ark",
+		"name": "Ark",
+		"image": "https://changenow.io/images/sprite/currencies/ark.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "jst",
+		"name": "JUST",
+		"image": "https://changenow.io/images/sprite/currencies/jst.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "stmx",
+		"name": "StormX",
+		"image": "https://changenow.io/images/sprite/currencies/stmx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "sys",
+		"name": "Syscoin",
+		"image": "https://changenow.io/images/sprite/currencies/sys.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dia",
+		"name": "DIA",
+		"image": "https://changenow.io/images/sprite/currencies/dia.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "waxp",
+		"name": "WAX",
+		"image": "https://changenow.io/images/sprite/currencies/waxp.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "poly",
+		"name": "Polymath",
+		"image": "https://changenow.io/images/sprite/currencies/poly.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "adx",
+		"name": "AdEx",
+		"image": "https://changenow.io/images/sprite/currencies/adx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "celr",
+		"name": "Celer Network",
+		"image": "https://changenow.io/images/sprite/currencies/celr.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "loom",
+		"name": "Loom Network",
+		"image": "https://changenow.io/images/sprite/currencies/loom.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "pnk",
+		"name": "Kleros",
+		"image": "https://changenow.io/images/sprite/currencies/pnk.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "hex",
+		"name": "HEX",
+		"image": "https://changenow.io/images/sprite/currencies/hex.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "farm",
+		"name": "Harvest Finance",
+		"image": "https://changenow.io/images/sprite/currencies/farm.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "susd",
+		"name": "SUSD",
+		"image": "https://changenow.io/images/sprite/currencies/susd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "pols",
+		"name": "Polkastarter",
+		"image": "https://changenow.io/images/sprite/currencies/pols.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "xor",
+		"name": "Sora",
+		"image": "https://changenow.io/images/sprite/currencies/xor.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "mph",
+		"name": "88mph",
+		"image": "https://changenow.io/images/sprite/currencies/mph.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "sun",
+		"name": "Sun",
+		"image": "https://changenow.io/images/sprite/currencies/sun.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "powr",
+		"name": "Power Ledger",
+		"image": "https://changenow.io/images/sprite/currencies/powr.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "mtl",
+		"name": "Metal",
+		"image": "https://changenow.io/images/sprite/currencies/mtl.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "coti",
+		"name": "COTI",
+		"image": "https://changenow.io/images/sprite/currencies/coti.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ogn",
+		"name": "Origin Protocol",
+		"image": "https://changenow.io/images/sprite/currencies/ogn.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "axs",
+		"name": "Axie Infinity",
+		"image": "https://changenow.io/images/sprite/currencies/axs.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "rpl",
+		"name": "Rocket Pool",
+		"image": "https://changenow.io/images/sprite/currencies/rpl.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "gt",
+		"name": "Gatechain Token",
+		"image": "https://changenow.io/images/sprite/currencies/gt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "aion",
+		"name": "Aion",
+		"image": "https://changenow.io/images/sprite/currencies/aion.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "mco",
+		"name": "Crypto.Com",
+		"image": "https://changenow.io/images/sprite/currencies/mco.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "blz",
+		"name": "Bluzelle",
+		"image": "https://changenow.io/images/sprite/currencies/blz.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "rcn",
+		"name": "Ripio Credit Network",
+		"image": "https://changenow.io/images/sprite/currencies/rcn.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "beam",
+		"name": "BEAM",
+		"image": "https://changenow.io/images/sprite/currencies/beam.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "hc",
+		"name": "HyperCash",
+		"image": "https://changenow.io/images/sprite/currencies/hc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "wtc",
+		"name": "Waltonchain",
+		"image": "https://changenow.io/images/sprite/currencies/wtc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "unfi",
+		"name": "Unifi Protocol DAO",
+		"image": "https://changenow.io/images/sprite/currencies/unfi.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "grs",
+		"name": "Groestlcoin",
+		"image": "https://changenow.io/images/sprite/currencies/grs.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ae",
+		"name": "Aeternity",
+		"image": "https://changenow.io/images/sprite/currencies/ae.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "qsp",
+		"name": "Quantstamp",
+		"image": "https://changenow.io/images/sprite/currencies/qsp.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "cnd",
+		"name": "Cindicator",
+		"image": "https://changenow.io/images/sprite/currencies/cnd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "perl",
+		"name": "Perlin",
+		"image": "https://changenow.io/images/sprite/currencies/perl.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "hez",
+		"name": "Hermez Network",
+		"image": "https://changenow.io/images/sprite/currencies/hez.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "yfl",
+		"name": "YF Link",
+		"image": "https://changenow.io/images/sprite/currencies/yfl.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "nav",
+		"name": "NavCoin",
+		"image": "https://changenow.io/images/sprite/currencies/nav.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "stpt",
+		"name": "Standard Tokenization Protocol",
+		"image": "https://changenow.io/images/sprite/currencies/stpt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ast",
+		"name": "AirSwap",
+		"image": "https://changenow.io/images/sprite/currencies/ast.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "gas",
+		"name": "Neo Gas",
+		"image": "https://changenow.io/images/sprite/currencies/gas.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "fio",
+		"name": "FIO Protocol",
+		"image": "https://changenow.io/images/sprite/currencies/fio.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "mdt",
+		"name": "Measurable Data Token",
+		"image": "https://changenow.io/images/sprite/currencies/mdt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "rook",
+		"name": "KeeperDAO",
+		"image": "https://changenow.io/images/sprite/currencies/rook.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dmg",
+		"name": "DMM: Governance",
+		"image": "https://changenow.io/images/sprite/currencies/dmg.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "go",
+		"name": "GoChain",
+		"image": "https://changenow.io/images/sprite/currencies/go.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dock",
+		"name": "Dock",
+		"image": "https://changenow.io/images/sprite/currencies/dock.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "awc",
+		"name": "Atomic Wallet Coin",
+		"image": "https://changenow.io/images/sprite/currencies/awc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "srn",
+		"name": "SIRIN LABS Token",
+		"image": "https://changenow.io/images/sprite/currencies/srn.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "mda",
+		"name": "Moeda Loyalty Points",
+		"image": "https://changenow.io/images/sprite/currencies/mda.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "rdn",
+		"name": "Raiden Network Token",
+		"image": "https://changenow.io/images/sprite/currencies/rdn.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "wabi",
+		"name": "Tael",
+		"image": "https://changenow.io/images/sprite/currencies/wabi.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "srk",
+		"name": "SparkPoint",
+		"image": "https://changenow.io/images/sprite/currencies/srk.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "pay",
+		"name": "TenXPay",
+		"image": "https://changenow.io/images/sprite/currencies/pay.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "brd",
+		"name": "Bread",
+		"image": "https://changenow.io/images/sprite/currencies/brd.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "evx",
+		"name": "Everex",
+		"image": "https://changenow.io/images/sprite/currencies/evx.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "xio",
+		"name": "XIO",
+		"image": "https://changenow.io/images/sprite/currencies/xio.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dlt",
+		"name": "Agrello",
+		"image": "https://changenow.io/images/sprite/currencies/dlt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "vib",
+		"name": "Viberate",
+		"image": "https://changenow.io/images/sprite/currencies/vib.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "cmt",
+		"name": "CyberMiles",
+		"image": "https://changenow.io/images/sprite/currencies/cmt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "swftc",
+		"name": "SwftCoin",
+		"image": "https://changenow.io/images/sprite/currencies/swftc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "snm",
+		"name": "SONM",
+		"image": "https://changenow.io/images/sprite/currencies/snm.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "vibe",
+		"name": "VIBE",
+		"image": "https://changenow.io/images/sprite/currencies/vibe.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "sngls",
+		"name": "SingularDTV",
+		"image": "https://changenow.io/images/sprite/currencies/sngls.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "soc",
+		"name": "All Sports",
+		"image": "https://changenow.io/images/sprite/currencies/soc.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "now",
+		"name": "NOW Token",
+		"image": "https://changenow.io/images/sprite/currencies/now.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "xchf",
+		"name": "CryptoFranc",
+		"image": "https://changenow.io/images/sprite/currencies/xchf.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": true,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "lxt",
+		"name": "Litex",
+		"image": "https://changenow.io/images/sprite/currencies/lxt.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "lead",
+		"name": "Lead Wallet",
+		"image": "https://changenow.io/images/sprite/currencies/lead.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dpi",
+		"name": "DeFi Pulse Index",
+		"image": "https://changenow.io/images/sprite/currencies/dpi.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ong",
+		"name": "Ontology Gas",
+		"image": "https://changenow.io/images/sprite/currencies/ong.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "oro",
+		"name": "ORO",
+		"image": "https://changenow.io/images/sprite/currencies/oro.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "axn",
+		"name": "Axion",
+		"image": "https://changenow.io/images/sprite/currencies/axn.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "vybe",
+		"name": "Vybe",
+		"image": "https://changenow.io/images/sprite/currencies/vybe.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "stfiro",
+		"name": "stakedFIRO",
+		"image": "https://changenow.io/images/sprite/currencies/stfiro.svg",
+		"hasExternalId": false,
+		"isFiat": false,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "usd",
+		"name": "Dollar",
+		"image": "https://changenow.io/images/sprite/currencies/usd.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "gbp",
+		"name": "British Pound Sterling",
+		"image": "https://changenow.io/images/sprite/currencies/gbp.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "cad",
+		"name": "Canadian Dollar",
+		"image": "https://changenow.io/images/sprite/currencies/cad.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "jpy",
+		"name": "Japanese Yen",
+		"image": "https://changenow.io/images/sprite/currencies/jpy.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "rub",
+		"name": "Russian Ruble",
+		"image": "https://changenow.io/images/sprite/currencies/rub.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "aud",
+		"name": " Australian Dollar",
+		"image": "https://changenow.io/images/sprite/currencies/aud.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "chf",
+		"name": "Swiss Franc",
+		"image": "https://changenow.io/images/sprite/currencies/chf.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "czk",
+		"name": "Czech Koruna",
+		"image": "https://changenow.io/images/sprite/currencies/czk.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "dkk",
+		"name": "Danish Krone",
+		"image": "https://changenow.io/images/sprite/currencies/dkk.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "nok",
+		"name": " Norwegian Krone",
+		"image": "https://changenow.io/images/sprite/currencies/nok.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "nzd",
+		"name": "New Zealand Dollar",
+		"image": "https://changenow.io/images/sprite/currencies/nzd.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "pln",
+		"name": "Polish Złoty",
+		"image": "https://changenow.io/images/sprite/currencies/pln.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "sek",
+		"name": "Swedish Krona",
+		"image": "https://changenow.io/images/sprite/currencies/sek.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "try",
+		"name": "Turkish Lira",
+		"image": "https://changenow.io/images/sprite/currencies/try.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "zar",
+		"name": "South African Rand",
+		"image": "https://changenow.io/images/sprite/currencies/zar.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "huf",
+		"name": "Hungarian Forint",
+		"image": "https://changenow.io/images/sprite/currencies/huf.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "ils",
+		"name": "Israeli New Shekel",
+		"image": "https://changenow.io/images/sprite/currencies/ils.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	},
+	{
+		"ticker": "krw",
+		"name": "South Korean Won",
+		"image": "https://changenow.io/images/sprite/currencies/krw.svg",
+		"hasExternalId": false,
+		"isFiat": true,
+		"featured": false,
+		"isStable": false,
+		"supportsFixedRate": false
+	}
+]

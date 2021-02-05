@@ -1,5 +1,7 @@
 import React from "react";
 import { FormStep } from "./FormStep";
+import { RecipientStep } from "./RecipientStep";
+
 import { Layout } from "../components/Layout";
 import { useExchange } from "../hooks/use-exchange";
 import { useBuilder } from "../hooks/use-builder";
