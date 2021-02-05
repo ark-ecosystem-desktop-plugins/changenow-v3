@@ -2,15 +2,15 @@ import React from "react";
 import { ImageWorld } from "../components/ImageWorld";
 
 const { Components } = globalThis.ark;
-const { Box } = Components;
+const { Box, Spinner } = Components;
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children, isLoading }) => {
 	return (
 		<Box
 			as="section"
 			className="flex-1 flex flex-col relative"
 			styled={{
-                color: "white",
+				color: "white",
 				background:
 					"#2B2B37 radial-gradient(ellipse 210px 210px at 100% 40%, rgba(110, 14, 125, 0.2), #2B2B37)",
 			}}
@@ -50,9 +50,7 @@ export const Layout = ({ children }) => {
 						background: "#3D3D70",
 					}}
 				/>
-				<Box
-					className="sm:block hidden ml-4 text-theme-secondary-text"
-				>
+				<Box className="sm:block hidden ml-4 text-theme-secondary-text">
 					Cryptocurrency Exchange
 				</Box>
 			</header>
@@ -67,32 +65,76 @@ export const Layout = ({ children }) => {
 				<ImageWorld />
 
 				<div className="lg:w-4/5 w-full lg:p-2 p-1 flex flex-col lg:flex-row p-5 z-20">
-					<div className="w-3/5">
-						<Box as="h1" className="text-5xl font-bold" styled={{ color: "white" }}>Limitless exchange</Box>
-						<Box as="p" className="mb-8 text-2xl" styled={{ color: "#5c5780" }}>Fast coin swaps free of custody</Box>
-						<div className="mb-4 inline-block capitalize relative">
-							<Box as="p" className="text-lg font-bold" styled={{ color: "#FFC24A" }}>
-								What you see is what you get
-							</Box>
-							<Box as="img" className="absolute w-4 transform -translate-y-12 translate-x-5 right-0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGPSURBVHgBrVRLUsJAEO2ecaMrPIHhBMraKgk7YJPcADmBeALxBMAN9AasxF1Ey703MJ7ArLCkTNpOTCzzmWTG4q0y/Zvp168DYADy+hY9D49McoRJMEh04QvGJil7JsGAYgQQBUYpuoExPSDFa3KQYOHp3ZtOnj5FMT0ZDGgymYHz+4XU1U3SoihHT4Zwc4i9h8Z56HUghV227Z+DBpA8uwXyYMbvtNRh4oT9rYLRZ5tfU9rnLi8TihIKBE4BcQS7wZKLj2MKczOgx8GEb57Bf0EQMCfXeLaaZ6bSkNNuPO7GAhMQ0xVRD3v3/l+zUkW0Hs7ZewF6xRcQfUyrVFUrU1oPbhrnwsWxu5qo3PUyRWj+cyIc17sVIM9l+W7foRkBK6atWjp1B3Lrlm/lQVJJ+/EeuaoydRQ5hfOSB9mJlcKX3BZuVs6pkqIcPRXaTszJzoirdMOVNFV3ID/ttPgLRFGnWDx5WWwLw05KmZImBUXo/Gh7U1qcXBT7WKJtfsiCj9q/cKCnvg2GYMoqO/gGeuWYpiw2NTYAAAAASUVORK5CYII=" />
-							<Box as="img" className="absolute w-2 transform top-0 translate-x-8 right-0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGPSURBVHgBrVRLUsJAEO2ecaMrPIHhBMraKgk7YJPcADmBeALxBMAN9AasxF1Ey703MJ7ArLCkTNpOTCzzmWTG4q0y/Zvp168DYADy+hY9D49McoRJMEh04QvGJil7JsGAYgQQBUYpuoExPSDFa3KQYOHp3ZtOnj5FMT0ZDGgymYHz+4XU1U3SoihHT4Zwc4i9h8Z56HUghV227Z+DBpA8uwXyYMbvtNRh4oT9rYLRZ5tfU9rnLi8TihIKBE4BcQS7wZKLj2MKczOgx8GEb57Bf0EQMCfXeLaaZ6bSkNNuPO7GAhMQ0xVRD3v3/l+zUkW0Hs7ZewF6xRcQfUyrVFUrU1oPbhrnwsWxu5qo3PUyRWj+cyIc17sVIM9l+W7foRkBK6atWjp1B3Lrlm/lQVJJ+/EeuaoydRQ5hfOSB9mJlcKX3BZuVs6pkqIcPRXaTszJzoirdMOVNFV3ID/ttPgLRFGnWDx5WWwLw05KmZImBUXo/Gh7U1qcXBT7WKJtfsiCj9q/cKCnvg2GYMoqO/gGeuWYpiw2NTYAAAAASUVORK5CYII=" />
+					{isLoading ? (
+						<div className="mx-auto">
+							<Spinner size="lg" />
 						</div>
-						<div>
-							<p className="mb-3 text-sm text-theme-secondary-text">Great rating on</p>
-							<a href="https://www.trustpilot.com/review/changenow.io" target="_blank" className="inline-block">
-								<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAbCAYAAAD4WUj2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAbBSURBVHgB7VndbhtFFD4zu3aqgNStRAsRFV3zAnHvuACxQcBFJVSHF4jDbalqIwTqVWyQ4DKJEDcIye4TxAWpgvLjzRMkfQG8hUIluLCLAEXBnuGcmXEydXa9u064ao5yst75+eabM+fM3wKkiJTSQ12x3isyWfpWnb6VvoO6TukT+eWY9g7S8emjdk1aD7Vl6jamcNgxde0yfYNTsdrZIDzrfcfOn+AUWDzGWEFMO0e4cJhuXB8fRDiwkkPUktE6amS9XzZlPKNLJn0TtYpam8j3Ypq108kAA4O7ispM+obV5uYEh2VTxre4Eo/7qFvWoHpT2rVtcAMfXdRtg7NssMZGnsrFhemyZogeCGNsYDpNjQ9MWpRQv4d5RKZtOkaR0IDsEhBJg08aWnmZOFjpVSx71WDuQnYhp2giTsNKCxHrEj7XMH1pGpdED8bCVdBed1JChCLIJxHqynhqOSHJjGU81Edtx2TfQg3SuPGkeQe095LQqGzDbFI3c9QWaM9ZzVddhSN5/o4Z8JnFhDoZo52jGrU9SIiOcRScnQZAHrxuFg/fIhOAHrkI9TI20IbZhLx2EZUGsTllKokVLE+doBDcNjx7Ns8MUjYLUg/01FTPywFM+M8q4ymiCnrS9s37eNcwCyFbalifvJAWw7VZQp3aR62CXuiofi1H9Qi1CTpySoizAfmEjOsn8PbN89E0AD5RYWxkCo02EurACYjVsZp5j0CTf2ybZq3wUQwGpYWQEpITQuEdGp3FE0PzLMfk0YKZiksGJs+gMKRJ20fdMoBNOFmhLcwN653auyGtPS/obVmHjEnpqGvjqDLTFpWddT3ILWZQycla1r6X9uHroKM+1UacRsCMMFUomfT2MaeGOCEv9sZEQc+JZCxawCQ+aZ4kb6ib/Aj0wtgz+TTwt4+xHmSR1sRBgQZ01fDsGh59ONw+hvB/S9KiE5cu9cnMm0jz4tLz5iekJ875k/lWOwcK8fz9FMzE/FM5lVM5lVM5lSdPXnrY8F/pN6/CMURjfPIqHENOAiM4IR4v//FxkKVs2nWlkuKZuRUQooo/b8OMUizOrTCp9o9LMKPMFQtrYqQOQzNjSMTgI+YflwdIhRGmlWVpBYKHn/pQ4F2g/R0eRsJnPrwFOeUAA6TPJA+65z/IfRozGD8hD+Qsl8LzN0PIKQrDZT3shwQpXjsWhpJ0HokGDnoND56a9zlz8OJH6AsWCZFkTpW5Ivrx3Pv3IY2MjSFFjY5BeHTcHQ0lntaGUbhwM8qOwen69KohfU8Ar8m//rwXlhqDrBgO52tS6OtZ5LIrR3hq3Pt7Nw+G5oEYMhvGEQPTCDn8TJepewkcaBrtg4ISX8w7ehL6UvWHC+/disMoIAbm+4oIoz+EUCdNUJgKiLM+Gr6ehKF4MDUlSO25h3UJDRQHumyRtTiM1x+uBzgJbgGd2Ma9YIdY2gKMWD2ahiEd2GJ0kyc1xLgfOhKA7ID/kUdMX4580SCvEkWnwoAPGLiSI7ojHMYEjp3A39JhDv4GcBpxhMYYQ8KQzoBLDlQef0vCY9KVhIGpwATbnIaBrSzjKAywXSxPdR0gPgpLYVIa30jC+H6hHkoBq9hun0sXdJtcY2Ff8An0TMPg6KVccKC+6CfxcOk3cjD9S+hL4hRx5ffPy0LQ6Nvf5LRHo6Wad5+9lnqT9AZicCG7OMTeoecod8Yju/jo7sL1Ri4Mm7XyItb8ZuFaKgb1ZaQw6D758S6jvRpZ+vLmr59VmMNaGDpnkTxjmoTKw/7Uv33u3di75sRvcncuXNtFT4lwfJQX0+hzKEgaLXc014YM8h1icOHuMsLQXqxwKCL2957OdPmtMCRioKcQDlNepL1vb28+E8YdzSMir2MqArhS6lcW45Lcff56x0EMigCHMBQX8uTCIMm4JFM/26NZFlVI6ZBQRiKScji6DBkFMcpkUKrnUAeFNtR84V8/B8aiY6YqwlB8EGe+8E8ODKesQpxCmrjoKUe+/duXl7JiIO9FR02brpoWNBfmTcNINHCl1/IQyEPAiHOn6jLnRZyXOzRqLnd9yCAKA1xPRQJiDPfdEmKGylDgBFkwrjz4AqcI9xwnHhLvrAUsIV7IlJHOlLNikDEJg434ssIQzjatBUPGg6wYZi26T/VBMOIR0TqwP4REh0s+aBRw7hVOkw/FZqe0Ot6CLFd+aQUInqljbN69xPeHTRjCRufiAcaSwkBvyIJRlAWPtmRfXVzZtJLDt35uVXGYMn0+IgycLt/pvLDatjEqD1pVGPJM3wmLaBDkUf364oq9kJUqyAP7kljvPwGKV7uO5pHvAAAAAElFTkSuQmCC" />
-							</a>
-						</div>
-					</div>
-					
-                    <div className="flex-1">
-                        {children}
-                    </div>
+					) : (
+						<>
+							<div className="w-3/5">
+								<Box
+									as="h1"
+									className="text-5xl font-bold"
+									styled={{ color: "white" }}
+								>
+									Limitless exchange
+								</Box>
+								<Box
+									as="p"
+									className="mb-8 text-2xl"
+									styled={{ color: "#5c5780" }}
+								>
+									Fast coin swaps free of custody
+								</Box>
+								<div className="mb-4 inline-block capitalize relative">
+									<Box
+										as="p"
+										className="text-lg font-bold"
+										styled={{ color: "#FFC24A" }}
+									>
+										What you see is what you get
+									</Box>
+									<Box
+										as="img"
+										className="absolute w-4 transform -translate-y-12 translate-x-5 right-0"
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGPSURBVHgBrVRLUsJAEO2ecaMrPIHhBMraKgk7YJPcADmBeALxBMAN9AasxF1Ey703MJ7ArLCkTNpOTCzzmWTG4q0y/Zvp168DYADy+hY9D49McoRJMEh04QvGJil7JsGAYgQQBUYpuoExPSDFa3KQYOHp3ZtOnj5FMT0ZDGgymYHz+4XU1U3SoihHT4Zwc4i9h8Z56HUghV227Z+DBpA8uwXyYMbvtNRh4oT9rYLRZ5tfU9rnLi8TihIKBE4BcQS7wZKLj2MKczOgx8GEb57Bf0EQMCfXeLaaZ6bSkNNuPO7GAhMQ0xVRD3v3/l+zUkW0Hs7ZewF6xRcQfUyrVFUrU1oPbhrnwsWxu5qo3PUyRWj+cyIc17sVIM9l+W7foRkBK6atWjp1B3Lrlm/lQVJJ+/EeuaoydRQ5hfOSB9mJlcKX3BZuVs6pkqIcPRXaTszJzoirdMOVNFV3ID/ttPgLRFGnWDx5WWwLw05KmZImBUXo/Gh7U1qcXBT7WKJtfsiCj9q/cKCnvg2GYMoqO/gGeuWYpiw2NTYAAAAASUVORK5CYII="
+									/>
+									<Box
+										as="img"
+										className="absolute w-2 transform top-0 translate-x-8 right-0"
+										src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGPSURBVHgBrVRLUsJAEO2ecaMrPIHhBMraKgk7YJPcADmBeALxBMAN9AasxF1Ey703MJ7ArLCkTNpOTCzzmWTG4q0y/Zvp168DYADy+hY9D49McoRJMEh04QvGJil7JsGAYgQQBUYpuoExPSDFa3KQYOHp3ZtOnj5FMT0ZDGgymYHz+4XU1U3SoihHT4Zwc4i9h8Z56HUghV227Z+DBpA8uwXyYMbvtNRh4oT9rYLRZ5tfU9rnLi8TihIKBE4BcQS7wZKLj2MKczOgx8GEb57Bf0EQMCfXeLaaZ6bSkNNuPO7GAhMQ0xVRD3v3/l+zUkW0Hs7ZewF6xRcQfUyrVFUrU1oPbhrnwsWxu5qo3PUyRWj+cyIc17sVIM9l+W7foRkBK6atWjp1B3Lrlm/lQVJJ+/EeuaoydRQ5hfOSB9mJlcKX3BZuVs6pkqIcPRXaTszJzoirdMOVNFV3ID/ttPgLRFGnWDx5WWwLw05KmZImBUXo/Gh7U1qcXBT7WKJtfsiCj9q/cKCnvg2GYMoqO/gGeuWYpiw2NTYAAAAASUVORK5CYII="
+									/>
+								</div>
+								<div>
+									<p className="mb-3 text-sm text-theme-secondary-text">
+										Great rating on
+									</p>
+									<a
+										href="https://www.trustpilot.com/review/changenow.io"
+										target="_blank"
+										className="inline-block"
+									>
+										<img src="data:image/png;base64,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" />
+									</a>
+								</div>
+							</div>
+
+							<div className="flex-1 max-w-md">{children}</div>
+						</>
+					)}
 				</div>
 			</Box>
 
-			<Box as="footer" className="py-6 w-100 text-center text-xl text-white capitalize font-bold" styled={{ background: "linear-gradient(270deg, #CDBAFF 0%, #5E5AE2 97.43%)" }}>
-				Our customers received The displayed amount in 98.7% of all the exchanges! 
+			<Box
+				as="footer"
+				className="py-6 w-100 text-center text-xl text-white capitalize font-bold"
+				styled={{
+					background:
+						"linear-gradient(270deg, #CDBAFF 0%, #5E5AE2 97.43%)",
+				}}
+			>
+				Our customers received The displayed amount in 98.7% of all the
+				exchanges!
 			</Box>
 		</Box>
 	);

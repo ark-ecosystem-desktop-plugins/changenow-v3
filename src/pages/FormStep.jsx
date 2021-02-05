@@ -5,9 +5,9 @@ import { ChevronDownIcon } from "../icons/ChevronDownIcon";
 import { SwitchIcon } from "../icons/SwitchIcon";
 
 const { Components } = globalThis.ark;
-const { Box } = Components;
+const { Box, Spinner } = Components;
 
-export const FormStep = ({ state, dispatch }) => {
+export const FormStep = ({ state, dispatch, onSubmit }) => {
 	const { amount, from, to, currencies, estimatedAmount } = state;
 	const { exchangeAmount } = useExchange();
 
@@ -44,7 +44,11 @@ export const FormStep = ({ state, dispatch }) => {
 			const name = currency.name.toLowerCase();
 			const ticker = currency.ticker.toLowerCase();
 			const isNotFrom = from && currency.ticker !== from.ticker;
-			return (ticker.includes(filter) || name.includes(filter)) && !currency.isFiat && isNotFrom;
+			return (
+				(ticker.includes(filter) || name.includes(filter)) &&
+				!currency.isFiat &&
+				isNotFrom
+			);
 		});
 	}, [currencies, from, toFilterQuery]);
 
@@ -64,7 +68,10 @@ export const FormStep = ({ state, dispatch }) => {
 	}, [fetchEstimatedAmount]);
 
 	return (
-		<form>
+		<form onSubmit={evt => {
+			evt.preventDefault();
+			onSubmit?.();
+		}}>
 			<Box
 				className="relative rounded flex items-stretch"
 				styled={{ backgroundColor: "#3D3D70", color: "white" }}
@@ -147,14 +154,24 @@ export const FormStep = ({ state, dispatch }) => {
 				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">
 					You get
 				</label>
-				<Box
-					as="input"
-					type="text"
-					className="cursor-default pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
-					styled={{ height: "70px", color: "white" }}
-					readOnly
-					value={estimatedAmount}
-				/>
+
+				{isLoading ? (
+					<Box
+						className="w-full pt-4 pl-5 pb-0 flex items-center"
+						styled={{ height: "70px" }}
+					>
+						<Spinner size="sm" />
+					</Box>
+				) : (
+					<Box
+						as="input"
+						type="text"
+						className="cursor-default pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
+						styled={{ height: "70px", color: "white" }}
+						readOnly
+						value={estimatedAmount}
+					/>
+				)}
 				<button
 					type="button"
 					className="w-3/5 border-l border-theme-secondary-700 px-4 flex items-center justify-between"
@@ -185,9 +202,10 @@ export const FormStep = ({ state, dispatch }) => {
 
 			<Box
 				as="button"
-				type="button"
+				type="submit"
 				className="w-full rounded p-3 text-lg mt-8 font-semibold"
 				styled={{ background: "#3bee81", color: "white" }}
+				disabled={isLoading || !estimatedAmount}
 			>
 				Exchange
 			</Box>

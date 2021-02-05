@@ -176,11 +176,13 @@ const {
   Components: Components$1
 } = globalThis.ark;
 const {
-  Box: Box$1
+  Box: Box$1,
+  Spinner
 } = Components$1;
 const FormStep = ({
   state,
-  dispatch
+  dispatch,
+  onSubmit
 }) => {
   const {
     amount,
@@ -236,7 +238,12 @@ const FormStep = ({
   React__default['default'].useEffect(() => {
     fetchEstimatedAmount();
   }, [fetchEstimatedAmount]);
-  return /*#__PURE__*/React__default['default'].createElement("form", null, /*#__PURE__*/React__default['default'].createElement(Box$1, {
+  return /*#__PURE__*/React__default['default'].createElement("form", {
+    onSubmit: evt => {
+      evt.preventDefault();
+      onSubmit?.();
+    }
+  }, /*#__PURE__*/React__default['default'].createElement(Box$1, {
     className: "relative rounded flex items-stretch",
     styled: {
       backgroundColor: "#3D3D70",
@@ -311,7 +318,14 @@ const FormStep = ({
     }
   }, /*#__PURE__*/React__default['default'].createElement("label", {
     className: "text-theme-secondary-text absolute top-1 left-5 text-sm"
-  }, "You get"), /*#__PURE__*/React__default['default'].createElement(Box$1, {
+  }, "You get"), isLoading ? /*#__PURE__*/React__default['default'].createElement(Box$1, {
+    className: "w-full pt-4 pl-5 pb-0 flex items-center",
+    styled: {
+      height: "70px"
+    }
+  }, /*#__PURE__*/React__default['default'].createElement(Spinner, {
+    size: "sm"
+  })) : /*#__PURE__*/React__default['default'].createElement(Box$1, {
     as: "input",
     type: "text",
     className: "cursor-default pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0",
@@ -348,12 +362,13 @@ const FormStep = ({
     }
   })), /*#__PURE__*/React__default['default'].createElement(Box$1, {
     as: "button",
-    type: "button",
+    type: "submit",
     className: "w-full rounded p-3 text-lg mt-8 font-semibold",
     styled: {
       background: "#3bee81",
       color: "white"
-    }
+    },
+    disabled: isLoading || !estimatedAmount
   }, "Exchange"));
 };
 
@@ -380,10 +395,12 @@ const {
   Components: Components$3
 } = globalThis.ark;
 const {
-  Box: Box$2
+  Box: Box$2,
+  Spinner: Spinner$1
 } = Components$3;
 const Layout = ({
-  children
+  children,
+  isLoading
 }) => {
   return /*#__PURE__*/React__default['default'].createElement(Box$2, {
     as: "section",
@@ -432,7 +449,11 @@ const Layout = ({
     }
   }, /*#__PURE__*/React__default['default'].createElement(ImageWorld, null), /*#__PURE__*/React__default['default'].createElement("div", {
     className: "lg:w-4/5 w-full lg:p-2 p-1 flex flex-col lg:flex-row p-5 z-20"
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, isLoading ? /*#__PURE__*/React__default['default'].createElement("div", {
+    className: "mx-auto"
+  }, /*#__PURE__*/React__default['default'].createElement(Spinner$1, {
+    size: "lg"
+  })) : /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "w-3/5"
   }, /*#__PURE__*/React__default['default'].createElement(Box$2, {
     as: "h1",
@@ -471,8 +492,8 @@ const Layout = ({
   }, /*#__PURE__*/React__default['default'].createElement("img", {
     src: "data:image/png;base64,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"
   })))), /*#__PURE__*/React__default['default'].createElement("div", {
-    className: "flex-1"
-  }, children))), /*#__PURE__*/React__default['default'].createElement(Box$2, {
+    className: "flex-1 max-w-md"
+  }, children)))), /*#__PURE__*/React__default['default'].createElement(Box$2, {
     as: "footer",
     className: "py-6 w-100 text-center text-xl text-white capitalize font-bold",
     styled: {
@@ -553,7 +574,6 @@ const {
   Components: Components$4
 } = globalThis.ark;
 const {
-  Box: Box$3,
   Tabs,
   TabPanel
 } = Components$4;
@@ -580,13 +600,16 @@ const MainPage = () => {
 
     initialize();
   }, []);
-  return /*#__PURE__*/React__default['default'].createElement(Layout, null, isLoading ? /*#__PURE__*/React__default['default'].createElement("span", null, "Loading...") : /*#__PURE__*/React__default['default'].createElement(Tabs, {
+  return /*#__PURE__*/React__default['default'].createElement(Layout, {
+    isLoading: isLoading
+  }, /*#__PURE__*/React__default['default'].createElement(Tabs, {
     activeId: activeTab
   }, /*#__PURE__*/React__default['default'].createElement(TabPanel, {
     tabId: 1
   }, /*#__PURE__*/React__default['default'].createElement(FormStep, {
     state: state,
-    dispatch: dispatch
+    dispatch: dispatch,
+    onSubmit: () => setActiveTab(current => current + 1)
   })), /*#__PURE__*/React__default['default'].createElement(TabPanel, {
     tabId: 2
   }, /*#__PURE__*/React__default['default'].createElement(RecipientStep, null))));

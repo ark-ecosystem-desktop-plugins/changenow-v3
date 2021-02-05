@@ -7,7 +7,7 @@ import { useExchange } from "../hooks/use-exchange";
 import { useBuilder } from "../hooks/use-builder";
 
 const { Components } = globalThis.ark;
-const { Box, Tabs, TabPanel } = Components;
+const { Tabs, TabPanel } = Components;
 
 export const MainPage = () => {
 	const { getAllCurrencies } = useExchange();
@@ -32,19 +32,15 @@ export const MainPage = () => {
 	}, []);
 
 	return (
-		<Layout>
-			{isLoading ? (
-				<span>Loading...</span>
-			) : (
-				<Tabs activeId={activeTab}>
-					<TabPanel tabId={1}>
-						<FormStep state={state} dispatch={dispatch} />
-					</TabPanel>
-					<TabPanel tabId={2}>
-						<RecipientStep />
-					</TabPanel>
-				</Tabs>
-			)}
+		<Layout isLoading={isLoading}>
+			<Tabs activeId={activeTab}>
+				<TabPanel tabId={1}>
+					<FormStep state={state} dispatch={dispatch} onSubmit={() => setActiveTab(current => current + 1)} />
+				</TabPanel>
+				<TabPanel tabId={2}>
+					<RecipientStep />
+				</TabPanel>
+			</Tabs>
 		</Layout>
 	);
 };
