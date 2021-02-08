@@ -2,7 +2,9 @@ import React from "react";
 import { FormStep } from "./FormStep";
 import { RecipientStep } from "./RecipientStep";
 
-import { Layout } from "../components/Layout";
+import { MainLayout } from "../layouts/MainLayout";
+import { StepLayout } from "../layouts/StepLayout";
+
 import { useExchange } from "../hooks/use-exchange";
 import { useBuilder } from "../hooks/use-builder";
 
@@ -32,15 +34,18 @@ export const MainPage = () => {
 	}, []);
 
 	return (
-		<Layout isLoading={isLoading}>
-			<Tabs activeId={activeTab}>
-				<TabPanel tabId={1}>
+		<Tabs activeId={activeTab} className="flex-1 flex">
+			<TabPanel tabId={1} className="flex-1">
+				<MainLayout isLoading={isLoading}>
 					<FormStep state={state} dispatch={dispatch} onSubmit={() => setActiveTab(current => current + 1)} />
-				</TabPanel>
-				<TabPanel tabId={2}>
-					<RecipientStep />
-				</TabPanel>
-			</Tabs>
-		</Layout>
+				</MainLayout>
+			</TabPanel>
+
+			<TabPanel tabId={2} className="flex-1 flex items-center justify-center">
+				<StepLayout>
+					<RecipientStep state={state} dispatch={dispatch} />
+				</StepLayout>
+			</TabPanel>
+		</Tabs>
 	);
 };

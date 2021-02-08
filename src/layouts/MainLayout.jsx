@@ -4,11 +4,11 @@ import { ImageWorld } from "../components/ImageWorld";
 const { Components } = globalThis.ark;
 const { Box, Spinner } = Components;
 
-export const Layout = ({ children, isLoading }) => {
+export const MainLayout = ({ children, isLoading }) => {
 	return (
 		<Box
 			as="section"
-			className="flex-1 flex flex-col relative"
+			className="flex-1 flex flex-col relative h-full"
 			styled={{
 				color: "white",
 				background:

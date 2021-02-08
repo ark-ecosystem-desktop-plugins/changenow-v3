@@ -13,32 +13,51 @@ const swapReducer = (state, action) => {
         case "from": {
             return {
                 ...state,
-                from: action.from
+                from: action.from,
+                estimatedAmount: undefined,
+                transactionSpeedForecast: undefined,
+                minAmount: undefined,
             }
         }
         case "to": {
             return {
                 ...state,
-                to: action.to
+                to: action.to,
+                estimatedAmount: undefined,
+                transactionSpeedForecast: undefined,
+                minAmount: undefined
             }
         }
         case "toggleCurrencies": {
             return {
                 ...state,
                 from: state.to,
-                to: state.from
+                to: state.from,
+                estimatedAmount: undefined,
+                transactionSpeedForecast: undefined,
+                minAmount: undefined
             }
         }
         case "amount": {
             return {
                 ...state,
-                amount: action.amount
+                amount: action.amount,
+                estimatedAmount: undefined,
+                transactionSpeedForecast: undefined,
+                minAmount: undefined
             }
         }
         case "estimatedAmount": {
             return {
                 ...state,
-                estimatedAmount: action.estimatedAmount
+                estimatedAmount: action.estimatedAmount,
+                transactionSpeedForecast: action.transactionSpeedForecast
+            }
+        }
+        case "minAmount": {
+            return {
+                ...state,
+                minAmount: action.minAmount
             }
         }
         case "recipient": {

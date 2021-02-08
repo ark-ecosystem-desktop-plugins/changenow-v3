@@ -23,8 +23,14 @@ export const useExchange = () => {
         }
     }
 
+    const minimalExchangeAmount = async (ticker) => {
+        const response = await client.get(`${API_BASE_URL}/min-amount/${ticker}`);
+        return response.json();
+    }
+
     return {
         getAllCurrencies,
-        exchangeAmount
+        exchangeAmount,
+        minimalExchangeAmount
     }
 }

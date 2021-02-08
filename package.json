@@ -18,7 +18,8 @@
     ],
     "permissions": [
       "LAUNCH",
-      "HTTP"
+      "HTTP",
+      "PROFILE"
     ],
     "minimumVersion": "3.0"
   },
