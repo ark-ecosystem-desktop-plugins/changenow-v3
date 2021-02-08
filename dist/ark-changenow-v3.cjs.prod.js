@@ -258,17 +258,18 @@ const SwitchIcon = () => {
 const { Components: Components$1 } = globalThis.ark;
 const { Box: Box$1, Spinner } = Components$1;
 const InputConvert = ({ state, dispatch, isTransparent }) => {
-	const { amount, from, to, currencies, estimatedAmount } = state;
-	const { exchangeAmount } = useExchange();
+	const { amount, from, to, currencies, estimatedAmount, minAmount } = state;
+	const { exchangeAmount, minimalExchangeAmount } = useExchange();
 	const [isLoading, setIsLoading] = React__default["default"].useState(false);
 	const [isFromFilterOpen, setIsFromFilterOpen] = React__default["default"].useState(false);
 	const [fromFilterQuery, setFromFilterQuery] = React__default["default"].useState("");
 	const [isToFilterOpen, setIsToFilterOpen] = React__default["default"].useState(false);
 	const [toFilterQuery, setToFilterQuery] = React__default["default"].useState("");
-	const unitPrice = React__default["default"].useMemo(() => Number(estimatedAmount / amount).toFixed(7), [
-		estimatedAmount,
-		amount,
-	]);
+	const unitPrice = React__default["default"].useMemo(
+		() => (estimatedAmount ? Number(estimatedAmount / amount).toFixed(7) : 0),
+		[estimatedAmount, amount],
+	);
+	const isAmountTooLow = minAmount > amount;
 	const fromOptions = React__default["default"].useMemo(() => {
 		const filter = fromFilterQuery.toLowerCase().trim();
 		return currencies.filter((currency) => {
@@ -289,16 +290,30 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 	}, [currencies, from, toFilterQuery]);
 	const convertAmount = React__default["default"].useCallback(async () => {
 		setIsLoading(true);
-		const ticker = `${from.ticker}_${to.ticker}`;
-		const { estimatedAmount, transactionSpeedForecast } = await exchangeAmount(ticker, amount);
-		dispatch({
-			type: "estimatedAmount",
-			estimatedAmount,
-			transactionSpeedForecast,
-		}); // const { minAmount } = await minimalExchangeAmount(ticker);
-		// dispatch({ type: "minAmount", minAmount });
 
-		setIsLoading(false);
+		try {
+			const ticker = `${from.ticker}_${to.ticker}`;
+			const { minAmount } = await minimalExchangeAmount(ticker);
+			dispatch({
+				type: "minAmount",
+				minAmount,
+			});
+
+			if (minAmount > amount) {
+				return;
+			}
+
+			const { estimatedAmount, transactionSpeedForecast } = await exchangeAmount(ticker, amount);
+			dispatch({
+				type: "estimatedAmount",
+				estimatedAmount,
+				transactionSpeedForecast,
+			});
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsLoading(false);
+		}
 	}, [amount, from, to]);
 
 	const toggleCurrencies = () =>
@@ -312,6 +327,25 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 	return /*#__PURE__*/ React__default["default"].createElement(
 		"div",
 		null,
+		isAmountTooLow
+			? /*#__PURE__*/ React__default["default"].createElement(
+					"p",
+					{
+						className: "text-theme-danger-400 text-sm mb-1",
+					},
+					"Minimum amount",
+					" ",
+					/*#__PURE__*/ React__default["default"].createElement(
+						"span",
+						{
+							className: "uppercase",
+						},
+						minAmount,
+						" ",
+						from.ticker,
+					),
+			  )
+			: null,
 		/*#__PURE__*/ React__default["default"].createElement(
 			Box$1,
 			{
@@ -419,7 +453,13 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 					},
 					/*#__PURE__*/ React__default["default"].createElement("span", null, "1 ", from?.ticker),
 					/*#__PURE__*/ React__default["default"].createElement("span", null, "\u2248"),
-					/*#__PURE__*/ React__default["default"].createElement("span", null, unitPrice, " ", to?.ticker),
+					/*#__PURE__*/ React__default["default"].createElement(
+						"span",
+						null,
+						unitPrice || "-",
+						" ",
+						to?.ticker,
+					),
 				),
 				/*#__PURE__*/ React__default["default"].createElement(
 					Box$1,
@@ -487,7 +527,7 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 							height: "70px",
 						},
 						readOnly: true,
-						defaultValue: estimatedAmount,
+						defaultValue: estimatedAmount || "-",
 				  }),
 			/*#__PURE__*/ React__default["default"].createElement(
 				"button",
@@ -656,7 +696,7 @@ const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 								className: "text-sm",
 								onClick: () => setShowRefundAddressInput(true),
 							},
-							"Add refund address",
+							"+ Add refund address",
 					  ),
 			),
 			availableRecipients.length
@@ -951,7 +991,8 @@ const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 				onChange: (evt) => setIsTermsChecked(evt.target.checked),
 				className: "mr-3",
 			}),
-			"I've read and agree to the ChangeNOW ",
+			"I've read and agree to the ChangeNOW",
+			" ",
 			/*#__PURE__*/ React__default["default"].createElement(
 				"a",
 				{
@@ -960,7 +1001,9 @@ const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 				},
 				"Terms of Use",
 			),
-			" and ",
+			" ",
+			"and",
+			" ",
 			/*#__PURE__*/ React__default["default"].createElement(
 				"a",
 				{
@@ -1322,11 +1365,11 @@ const swapReducer = (state, action) => {
 		}
 
 		case "restart": {
-			return {
-				transaction: undefined,
-				refundAddress: undefined,
-				recipient: undefined,
-			};
+			return { ...state, transaction: undefined, refundAddress: undefined, recipient: undefined };
+		}
+
+		case "status": {
+			return { ...state, transaction: { ...state.transaction, status: action.status } };
 		}
 	}
 };

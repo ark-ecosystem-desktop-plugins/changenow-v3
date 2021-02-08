@@ -8,8 +8,8 @@ const { Components } = globalThis.ark;
 const { Box, Spinner } = Components;
 
 export const InputConvert = ({ state, dispatch, isTransparent }) => {
-	const { amount, from, to, currencies, estimatedAmount } = state;
-	const { exchangeAmount } = useExchange();
+	const { amount, from, to, currencies, estimatedAmount, minAmount } = state;
+	const { exchangeAmount, minimalExchangeAmount } = useExchange();
 
 	const [isLoading, setIsLoading] = React.useState(false);
 
@@ -19,7 +19,11 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 	const [isToFilterOpen, setIsToFilterOpen] = React.useState(false);
 	const [toFilterQuery, setToFilterQuery] = React.useState("");
 
-	const unitPrice = React.useMemo(() => Number(estimatedAmount / amount).toFixed(7), [estimatedAmount, amount]);
+	const unitPrice = React.useMemo(() => (estimatedAmount ? Number(estimatedAmount / amount).toFixed(7) : 0), [
+		estimatedAmount,
+		amount,
+	]);
+	const isAmountTooLow = minAmount > amount;
 
 	const fromOptions = React.useMemo(() => {
 		const filter = fromFilterQuery.toLowerCase().trim();
@@ -43,19 +47,28 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 
 	const convertAmount = React.useCallback(async () => {
 		setIsLoading(true);
-		const ticker = `${from.ticker}_${to.ticker}`;
 
-		const { estimatedAmount, transactionSpeedForecast } = await exchangeAmount(ticker, amount);
-		dispatch({
-			type: "estimatedAmount",
-			estimatedAmount,
-			transactionSpeedForecast,
-		});
+		try {
+			const ticker = `${from.ticker}_${to.ticker}`;
 
-		// const { minAmount } = await minimalExchangeAmount(ticker);
-		// dispatch({ type: "minAmount", minAmount });
+			const { minAmount } = await minimalExchangeAmount(ticker);
+			dispatch({ type: "minAmount", minAmount });
 
-		setIsLoading(false);
+			if (minAmount > amount) {
+				return;
+			}
+
+			const { estimatedAmount, transactionSpeedForecast } = await exchangeAmount(ticker, amount);
+			dispatch({
+				type: "estimatedAmount",
+				estimatedAmount,
+				transactionSpeedForecast,
+			});
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setIsLoading(false);
+		}
 	}, [amount, from, to]);
 
 	const toggleCurrencies = () => dispatch({ type: "toggleCurrencies" });
@@ -66,6 +79,14 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 
 	return (
 		<div>
+			{isAmountTooLow ? (
+				<p className="text-theme-danger-400 text-sm mb-1">
+					Minimum amount{" "}
+					<span className="uppercase">
+						{minAmount} {from.ticker}
+					</span>
+				</p>
+			) : null}
 			<Box
 				className={`relative rounded flex items-stretch ${
 					isTransparent ? "text-theme-secondary-900 border border-theme-secondary-400" : "text-white"
@@ -125,7 +146,7 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 						<span>1 {from?.ticker}</span>
 						<span>≈</span>
 						<span>
-							{unitPrice} {to?.ticker}
+							{unitPrice || "-"} {to?.ticker}
 						</span>
 					</div>
 					<Box as="button" type="button" className="text-xs" styled={{ color: "#3bee81" }}>
@@ -163,7 +184,7 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 						className="cursor-default pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
 						styled={{ height: "70px" }}
 						readOnly
-						defaultValue={estimatedAmount}
+						defaultValue={estimatedAmount || "-"}
 					/>
 				)}
 				<button

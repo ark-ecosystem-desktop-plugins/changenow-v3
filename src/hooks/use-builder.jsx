@@ -80,9 +80,19 @@ const swapReducer = (state, action) => {
 		}
 		case "restart": {
 			return {
+				...state,
 				transaction: undefined,
 				refundAddress: undefined,
 				recipient: undefined,
+			};
+		}
+		case "status": {
+			return {
+				...state,
+				transaction: {
+					...state.transaction,
+					status: action.status,
+				},
 			};
 		}
 	}

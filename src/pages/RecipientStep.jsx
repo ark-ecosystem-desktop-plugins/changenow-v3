@@ -51,7 +51,7 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 						</button>
 					) : (
 						<button className="text-sm" onClick={() => setShowRefundAddressInput(true)}>
-							Add refund address
+							+ Add refund address
 						</button>
 					)}
 				</div>
