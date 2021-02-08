@@ -43,7 +43,7 @@ export const Listbox = ({ isOpen, options, search, onSearch, onSelect }) => {
 					styled={{ maxHeight: "200px" }}
 				>
 					{options.map((option) => (
-                        <li>
+                        <li key={option.ticker}>
                             <Box as="button" type="button" className="w-full flex space-x-2 px-4 py-1 text-xs transition duration-100 hover:bg-theme-secondary-200" onClick={() => onSelect?.(option)}>
                                 <div className="w-6 flex items-center justifiy-center">
                                     <img src={option.image} className="w-4" />

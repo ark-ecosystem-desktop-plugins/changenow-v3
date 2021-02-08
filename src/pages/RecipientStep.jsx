@@ -5,7 +5,7 @@ import { useWalletContext } from "../context/WalletProvider";
 const { Components } = globalThis.ark;
 const { Box } = Components;
 
-export const RecipientStep = ({ state, dispatch }) => {
+export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 	const { recipient, from, to, refundAdress } = state;
 	const walletContext = useWalletContext();
 
@@ -45,15 +45,29 @@ export const RecipientStep = ({ state, dispatch }) => {
 						Remove refund address
 					</button>
 				) : (
-					<button className="text-sm" onClick={() => setShowRefundAddressInput(true)}>Add refund address</button>
+					<button
+						className="text-sm"
+						onClick={() => setShowRefundAddressInput(true)}
+					>
+						Add refund address
+					</button>
 				)}
 			</div>
 
 			{availableRecipients.length ? (
-				<select name="recipient">
-					{availableRecipients.map((recipient) => (
-						<option value={recipient.address}>
-							{recipient.address}
+				<select
+					name="recipient"
+					value={recipient}
+					onChange={(evt) =>
+						dispatch({
+							type: "recipient",
+							recipient: evt.target.value,
+						})
+					}
+				>
+					{availableRecipients.map((item) => (
+						<option key={item.address} value={item.address}>
+							{item.address}
 						</option>
 					))}
 				</select>
@@ -74,14 +88,19 @@ export const RecipientStep = ({ state, dispatch }) => {
 			{showRefundAddressInput ? (
 				<div className="flex flex-col space-y-2">
 					<label htmlFor="refund-address">Refund Wallet</label>
-					<input name="refund-address" type="text" placeholder={`Enter ${from.ticker} refund addresss (Optional)`} />
+					<input
+						name="refund-address"
+						type="text"
+						placeholder={`Enter ${from.ticker} refund addresss (Optional)`}
+					/>
 				</div>
 			) : null}
 
 			<div className="flex space-x-4">
-				<button>Next</button>
+				<button onClick={onNext}>Next</button>
 				<Box
 					as="button"
+					onClick={onBack}
 					className="px-5 py-1 rounded border-2 hover:text-theme-success-500 text-lg"
 					styled={{ borderColor: "#3bee81", color: "#3bee81" }}
 				>
