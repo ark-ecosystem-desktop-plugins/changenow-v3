@@ -16,13 +16,7 @@ export const MainLayout = ({ children, isLoading }) => {
 			}}
 		>
 			<header className="flex flex-wrap items-center p-5">
-				<svg
-					width="128"
-					height="128"
-					viewBox="0 0 128 128"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-				>
+				<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g id="ChangeNOW-logo-transparent">
 						<g id="Group">
 							<path
@@ -50,9 +44,7 @@ export const MainLayout = ({ children, isLoading }) => {
 						background: "#3D3D70",
 					}}
 				/>
-				<Box className="sm:block hidden ml-4 text-theme-secondary-text">
-					Cryptocurrency Exchange
-				</Box>
+				<Box className="sm:block hidden ml-4 text-theme-secondary-text">Cryptocurrency Exchange</Box>
 			</header>
 
 			<Box
@@ -72,26 +64,14 @@ export const MainLayout = ({ children, isLoading }) => {
 					) : (
 						<>
 							<div className="w-3/5">
-								<Box
-									as="h1"
-									className="text-5xl font-bold"
-									styled={{ color: "white" }}
-								>
+								<Box as="h1" className="text-5xl font-bold" styled={{ color: "white" }}>
 									Limitless exchange
 								</Box>
-								<Box
-									as="p"
-									className="mb-8 text-2xl"
-									styled={{ color: "#5c5780" }}
-								>
+								<Box as="p" className="mb-8 text-2xl" styled={{ color: "#5c5780" }}>
 									Fast coin swaps free of custody
 								</Box>
 								<div className="mb-4 inline-block capitalize relative">
-									<Box
-										as="p"
-										className="text-lg font-bold"
-										styled={{ color: "#FFC24A" }}
-									>
+									<Box as="p" className="text-lg font-bold" styled={{ color: "#FFC24A" }}>
 										What you see is what you get
 									</Box>
 									<Box
@@ -106,9 +86,7 @@ export const MainLayout = ({ children, isLoading }) => {
 									/>
 								</div>
 								<div>
-									<p className="mb-3 text-sm text-theme-secondary-text">
-										Great rating on
-									</p>
+									<p className="mb-3 text-sm text-theme-secondary-text">Great rating on</p>
 									<a
 										href="https://www.trustpilot.com/review/changenow.io"
 										target="_blank"
@@ -129,12 +107,10 @@ export const MainLayout = ({ children, isLoading }) => {
 				as="footer"
 				className="py-6 w-100 text-center text-xl text-white capitalize font-bold"
 				styled={{
-					background:
-						"linear-gradient(270deg, #CDBAFF 0%, #5E5AE2 97.43%)",
+					background: "linear-gradient(270deg, #CDBAFF 0%, #5E5AE2 97.43%)",
 				}}
 			>
-				Our customers received The displayed amount in 98.7% of all the
-				exchanges!
+				Our customers received The displayed amount in 98.7% of all the exchanges!
 			</Box>
 		</Box>
 	);

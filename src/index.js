@@ -6,6 +6,6 @@ export default (api) => {
 	api.launch().render(
 		<WalletProvider api={api}>
 			<MainPage />
-		</WalletProvider>
+		</WalletProvider>,
 	);
 };

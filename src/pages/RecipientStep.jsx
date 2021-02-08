@@ -9,14 +9,10 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 	const { recipient, from, to, refundAdress } = state;
 	const walletContext = useWalletContext();
 
-	const [showRefundAddressInput, setShowRefundAddressInput] = React.useState(
-		false
-	);
+	const [showRefundAddressInput, setShowRefundAddressInput] = React.useState(false);
 
 	const wallets = walletContext.profile().wallets();
-	const availableRecipients = wallets.filter(
-		(wallet) => wallet.coin.toLowerCase() === to.ticker.toLowerCase()
-	);
+	const availableRecipients = wallets.filter((wallet) => wallet.coin.toLowerCase() === to.ticker.toLowerCase());
 
 	return (
 		<div className="inline-flex flex-col space-y-5">
@@ -45,10 +41,7 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 						Remove refund address
 					</button>
 				) : (
-					<button
-						className="text-sm"
-						onClick={() => setShowRefundAddressInput(true)}
-					>
+					<button className="text-sm" onClick={() => setShowRefundAddressInput(true)}>
 						Add refund address
 					</button>
 				)}
@@ -65,6 +58,7 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 						})
 					}
 				>
+					<option value="">Select recipient address</option>
 					{availableRecipients.map((item) => (
 						<option key={item.address} value={item.address}>
 							{item.address}

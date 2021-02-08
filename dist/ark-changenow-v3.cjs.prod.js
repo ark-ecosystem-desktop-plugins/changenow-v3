@@ -119,7 +119,7 @@ const Listbox = ({
 
 const API_KEY = "86d883a331928e534472c534a653fd0221d60c390d1d857807b9b4484d8cc098";
 
-const API_BASE_URL = 'https://changenow.io/api/v1';
+const API_BASE_URL = "https://changenow.io/api/v1";
 const useExchange = () => {
   const context = useWalletContext();
   const client = context.http().create();
@@ -145,10 +145,22 @@ const useExchange = () => {
     return response.json();
   };
 
+  const createTransaction = async params => {
+    const response = await client.post(`${API_BASE_URL}/transactions/${API_KEY}`, params);
+    return response.json();
+  };
+
+  const getTransactionStatus = async id => {
+    const response = await client.get(`${API_BASE_URL}/transactions/${id}/${API_KEY}`);
+    return response.json();
+  };
+
   return {
     getAllCurrencies,
     exchangeAmount,
-    minimalExchangeAmount
+    minimalExchangeAmount,
+    createTransaction,
+    getTransactionStatus
   };
 };
 
@@ -340,7 +352,7 @@ const InputConvert = ({
       color: "white"
     },
     readOnly: true,
-    value: estimatedAmount
+    defaultValue: estimatedAmount
   }), /*#__PURE__*/React__default['default'].createElement("button", {
     type: "button",
     className: "w-3/5 border-l border-theme-secondary-700 px-4 flex items-center justify-between",
@@ -458,7 +470,9 @@ const RecipientStep = ({
       type: "recipient",
       recipient: evt.target.value
     })
-  }, availableRecipients.map(item => /*#__PURE__*/React__default['default'].createElement("option", {
+  }, /*#__PURE__*/React__default['default'].createElement("option", {
+    value: ""
+  }, "Select recipient address"), availableRecipients.map(item => /*#__PURE__*/React__default['default'].createElement("option", {
     key: item.address,
     value: item.address
   }, item.address))) : /*#__PURE__*/React__default['default'].createElement("input", {
@@ -510,13 +524,18 @@ const {
   Components: Components$4
 } = globalThis.ark;
 const {
-  Box: Box$4
+  Box: Box$4,
+  Spinner: Spinner$1
 } = Components$4;
 const ReviewStep = ({
   state,
+  dispatch,
   onConfirm,
   onBack
 }) => {
+  const {
+    createTransaction
+  } = useExchange();
   const {
     amount,
     estimatedAmount,
@@ -526,7 +545,38 @@ const ReviewStep = ({
     transactionSpeedForecast
   } = state;
   const [isTermsChecked, setIsTermsChecked] = React__default['default'].useState(false);
+  const [isLoading, setIsLoading] = React__default['default'].useState(false);
   const unitPrice = React__default['default'].useMemo(() => Number(estimatedAmount / amount).toFixed(7), [estimatedAmount, amount]);
+  const isValid = isTermsChecked && recipient && amount && from && to;
+
+  const createExchange = async () => {
+    setIsLoading(true);
+
+    try {
+      const params = {
+        from: state.from.ticker,
+        to: state.to.ticker,
+        address: state.recipient,
+        amount: state.amount
+      };
+
+      if (state.refundAddress) {
+        params.refundAddress = state.refundAddress;
+      }
+
+      const transaction = await createTransaction(params);
+      dispatch({
+        type: "transaction",
+        transaction
+      });
+      onConfirm?.();
+    } catch (e) {
+      console.error(e);
+    }
+
+    setIsLoading(false);
+  };
+
   return /*#__PURE__*/React__default['default'].createElement("div", {
     className: "inline-flex flex-col space-y-5"
   }, /*#__PURE__*/React__default['default'].createElement("div", {
@@ -572,9 +622,11 @@ const ReviewStep = ({
   }, "Privacy Policy")), /*#__PURE__*/React__default['default'].createElement("div", {
     className: "flex space-x-4"
   }, /*#__PURE__*/React__default['default'].createElement("button", {
-    onClick: onConfirm,
-    disabled: !isTermsChecked
-  }, "Confirm"), /*#__PURE__*/React__default['default'].createElement(Box$4, {
+    onClick: createExchange,
+    disabled: !isValid || isLoading
+  }, isLoading ? /*#__PURE__*/React__default['default'].createElement(Spinner$1, {
+    size: "sm"
+  }) : /*#__PURE__*/React__default['default'].createElement("span", null, "Confirm")), /*#__PURE__*/React__default['default'].createElement(Box$4, {
     as: "button",
     onClick: onBack,
     className: "px-5 py-1 rounded border-2 hover:text-theme-success-500 text-lg",
@@ -605,7 +657,7 @@ const {
 } = globalThis.ark;
 const {
   Box: Box$5,
-  Spinner: Spinner$1
+  Spinner: Spinner$2
 } = Components$6;
 const MainLayout = ({
   children,
@@ -660,7 +712,7 @@ const MainLayout = ({
     className: "lg:w-4/5 w-full lg:p-2 p-1 flex flex-col lg:flex-row p-5 z-20"
   }, isLoading ? /*#__PURE__*/React__default['default'].createElement("div", {
     className: "mx-auto"
-  }, /*#__PURE__*/React__default['default'].createElement(Spinner$1, {
+  }, /*#__PURE__*/React__default['default'].createElement(Spinner$2, {
     size: "lg"
   })) : /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "w-3/5"
@@ -801,13 +853,111 @@ const swapReducer = (state, action) => {
           refundAddress: action.refundAddress
         };
       }
+
+    case "transaction":
+      {
+        return { ...state,
+          transaction: action.transaction
+        };
+      }
+
+    case "restart":
+      {
+        return {
+          transaction: undefined,
+          refundAddress: undefined,
+          recipient: undefined
+        };
+      }
   }
 };
 
 const useBuilder = () => React__default['default'].useReducer(swapReducer, {
   currencies: [],
+  recipient: "",
   amount: 1
 });
+
+const CopyIcon = props => {
+  return /*#__PURE__*/React__default['default'].createElement("svg", _extends({
+    xmlns: "http://www.w3.org/2000/svg",
+    fill: "none",
+    viewBox: "0 0 24 24",
+    stroke: "currentColor"
+  }, props), /*#__PURE__*/React__default['default'].createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: 2,
+    d: "M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+  }));
+};
+
+const {
+  Box: Box$6
+} = globalThis.ark.Components;
+const TransactionStep = ({
+  state,
+  onRestart
+}) => {
+  const {
+    amount,
+    transaction
+  } = state;
+  return /*#__PURE__*/React__default['default'].createElement("div", {
+    className: "inline-flex flex-col space-y-4 w-full"
+  }, /*#__PURE__*/React__default['default'].createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React__default['default'].createElement("div", {
+    className: "flex items-center space-x-3 font-semibold"
+  }, /*#__PURE__*/React__default['default'].createElement("span", {
+    className: "rounded-full border-2 border-theme-success-500 flex items-center justify-center w-8 h-8"
+  }, "3"), /*#__PURE__*/React__default['default'].createElement("span", {
+    className: "text-theme-secondary-700"
+  }, "Sending"), /*#__PURE__*/React__default['default'].createElement("span", {
+    className: "text-theme-secondary-500 font-medium"
+  }, "Transaction Id: ", transaction.id)), /*#__PURE__*/React__default['default'].createElement(Box$6, {
+    as: "button",
+    type: "button",
+    styled: {
+      color: "#3bee81"
+    },
+    onClick: onRestart
+  }, "Start new transaction")), /*#__PURE__*/React__default['default'].createElement(Box$6, {
+    as: "dl",
+    className: "border-2 py-1 px-2",
+    styled: {
+      borderColor: "#3bee81"
+    }
+  }, /*#__PURE__*/React__default['default'].createElement("dt", null, "You send"), /*#__PURE__*/React__default['default'].createElement("dd", {
+    className: "text-2xl font-bold uppercase"
+  }, amount, " ", transaction.fromCurrency), /*#__PURE__*/React__default['default'].createElement("dt", null, "To address"), /*#__PURE__*/React__default['default'].createElement("dd", {
+    className: "flex items-center space-x-3 text-2xl font-bold"
+  }, transaction.payinAddress, /*#__PURE__*/React__default['default'].createElement("button", null, /*#__PURE__*/React__default['default'].createElement(CopyIcon, {
+    className: "w-5 h-5 text-theme-secondary-text ml-2"
+  }))), transaction.payinExtraId ? /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("dt", null, transaction.payinExtraIdName), /*#__PURE__*/React__default['default'].createElement("dd", {
+    className: "flex items-center space-x-3 text-2xl font-bold"
+  }, payinExtraId, /*#__PURE__*/React__default['default'].createElement("button", null, /*#__PURE__*/React__default['default'].createElement(CopyIcon, {
+    className: "w-5 h-5 text-theme-secondary-text ml-2"
+  })))) : null), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("p", null, "You get"), /*#__PURE__*/React__default['default'].createElement("span", {
+    className: "uppercase"
+  }, "\u2248 ", transaction.amount, " ", transaction.toCurrency)), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("p", null, "To address"), /*#__PURE__*/React__default['default'].createElement("span", null, transaction.payoutAddress)), transaction.payoutExtraId ? /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("p", null, transaction.payoutExtraIdName), /*#__PURE__*/React__default['default'].createElement("span", null, transaction.payoutExtraId)) : null, /*#__PURE__*/React__default['default'].createElement("ul", {
+    className: "flex space-x-2"
+  }, /*#__PURE__*/React__default['default'].createElement("li", {
+    className: "flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1"
+  }, "Awaiting deposit"), /*#__PURE__*/React__default['default'].createElement("li", {
+    className: "flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1"
+  }, "Exchanging"), /*#__PURE__*/React__default['default'].createElement("li", {
+    className: "flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1"
+  }, "Sending to your wallet")), /*#__PURE__*/React__default['default'].createElement("div", {
+    className: "p-1 bg-theme-secondary-200 text-sm"
+  }, /*#__PURE__*/React__default['default'].createElement("p", null, "If you have any questions about your exchange, please contact our support team via email."), /*#__PURE__*/React__default['default'].createElement(Box$6, {
+    as: "a",
+    href: "mailto: support@changenow.io",
+    styled: {
+      color: "#3bee81"
+    }
+  }, "support@changenow.io")));
+};
 
 const {
   Components: Components$7
@@ -830,10 +980,6 @@ const MainPage = () => {
       currencies
     });
   }, []);
-
-  const handleOnConfirm = () => {// TODO
-  };
-
   React__default['default'].useEffect(() => {
     const initialize = async () => {
       setIsLoading(true);
@@ -868,7 +1014,15 @@ const MainPage = () => {
     className: "flex-1 flex items-center justify-center"
   }, /*#__PURE__*/React__default['default'].createElement(StepLayout, null, /*#__PURE__*/React__default['default'].createElement(ReviewStep, {
     state: state,
-    onConfirm: handleOnConfirm,
+    dispatch: dispatch,
+    onConfirm: () => setActiveTab(current => current + 1),
+    onBack: () => setActiveTab(current => current - 1)
+  }))), /*#__PURE__*/React__default['default'].createElement(TabPanel, {
+    tabId: 4,
+    className: "flex-1 flex items-center justify-center"
+  }, /*#__PURE__*/React__default['default'].createElement(StepLayout, null, /*#__PURE__*/React__default['default'].createElement(TransactionStep, {
+    state: state,
+    onConfirm: () => setActiveTab(current => current - 2),
     onBack: () => setActiveTab(current => current - 1)
   }))));
 };

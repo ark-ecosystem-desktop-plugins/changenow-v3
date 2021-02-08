@@ -8,12 +8,14 @@ export const FormStep = ({ state, dispatch, onSubmit }) => {
 	const { estimatedAmount } = state;
 
 	return (
-		<form onSubmit={evt => {
-			evt.preventDefault();
-			onSubmit?.();
-		}}>
+		<form
+			onSubmit={(evt) => {
+				evt.preventDefault();
+				onSubmit?.();
+			}}
+		>
 			<InputConvert state={state} dispatch={dispatch} />
-	
+
 			<Box
 				as="button"
 				type="submit"
@@ -24,5 +26,5 @@ export const FormStep = ({ state, dispatch, onSubmit }) => {
 				Exchange
 			</Box>
 		</form>
-	)
+	);
 };

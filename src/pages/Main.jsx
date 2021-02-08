@@ -9,6 +9,7 @@ import { StepLayout } from "../layouts/StepLayout";
 
 import { useExchange } from "../hooks/use-exchange";
 import { useBuilder } from "../hooks/use-builder";
+import { TransactionStep } from "./TransactionStep";
 
 const { Components } = globalThis.ark;
 const { Tabs, TabPanel } = Components;
@@ -24,10 +25,6 @@ export const MainPage = () => {
 		const currencies = await getAllCurrencies();
 		dispatch({ type: "currencies", currencies });
 	}, []);
-
-	const handleOnConfirm = () => {
-		// TODO
-	}
 
 	React.useEffect(() => {
 		const initialize = async () => {
@@ -51,10 +48,7 @@ export const MainPage = () => {
 				</MainLayout>
 			</TabPanel>
 
-			<TabPanel
-				tabId={2}
-				className="flex-1 flex items-center justify-center"
-			>
+			<TabPanel tabId={2} className="flex-1 flex items-center justify-center">
 				<StepLayout>
 					<RecipientStep
 						state={state}
@@ -65,12 +59,24 @@ export const MainPage = () => {
 				</StepLayout>
 			</TabPanel>
 
-			<TabPanel
-				tabId={3}
-				className="flex-1 flex items-center justify-center"
-			>
+			<TabPanel tabId={3} className="flex-1 flex items-center justify-center">
 				<StepLayout>
-					<ReviewStep state={state} onConfirm={handleOnConfirm} onBack={() => setActiveTab((current) => current - 1)} />
+					<ReviewStep
+						state={state}
+						dispatch={dispatch}
+						onConfirm={() => setActiveTab((current) => current + 1)}
+						onBack={() => setActiveTab((current) => current - 1)}
+					/>
+				</StepLayout>
+			</TabPanel>
+
+			<TabPanel tabId={4} className="flex-1 flex items-center justify-center">
+				<StepLayout>
+					<TransactionStep
+						state={state}
+						onConfirm={() => setActiveTab((current) => current - 2)}
+						onBack={() => setActiveTab((current) => current - 1)}
+					/>
 				</StepLayout>
 			</TabPanel>
 		</Tabs>

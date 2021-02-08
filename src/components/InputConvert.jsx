@@ -19,10 +19,7 @@ export const InputConvert = ({ state, dispatch }) => {
 	const [isToFilterOpen, setIsToFilterOpen] = React.useState(false);
 	const [toFilterQuery, setToFilterQuery] = React.useState("");
 
-	const unitPrice = React.useMemo(
-		() => Number(estimatedAmount / amount).toFixed(7),
-		[estimatedAmount, amount]
-	);
+	const unitPrice = React.useMemo(() => Number(estimatedAmount / amount).toFixed(7), [estimatedAmount, amount]);
 
 	const fromOptions = React.useMemo(() => {
 		const filter = fromFilterQuery.toLowerCase().trim();
@@ -30,11 +27,7 @@ export const InputConvert = ({ state, dispatch }) => {
 			const name = currency.name.toLowerCase();
 			const ticker = currency.ticker.toLowerCase();
 			const isNotTo = to && currency.ticker !== to.ticker;
-			return (
-				(ticker.includes(filter) || name.includes(filter)) &&
-				!currency.isFiat &&
-				isNotTo
-			);
+			return (ticker.includes(filter) || name.includes(filter)) && !currency.isFiat && isNotTo;
 		});
 	}, [currencies, to, fromFilterQuery]);
 
@@ -44,11 +37,7 @@ export const InputConvert = ({ state, dispatch }) => {
 			const name = currency.name.toLowerCase();
 			const ticker = currency.ticker.toLowerCase();
 			const isNotFrom = from && currency.ticker !== from.ticker;
-			return (
-				(ticker.includes(filter) || name.includes(filter)) &&
-				!currency.isFiat &&
-				isNotFrom
-			);
+			return (ticker.includes(filter) || name.includes(filter)) && !currency.isFiat && isNotFrom;
 		});
 	}, [currencies, from, toFilterQuery]);
 
@@ -57,7 +46,11 @@ export const InputConvert = ({ state, dispatch }) => {
 		const ticker = `${from.ticker}_${to.ticker}`;
 
 		const { estimatedAmount, transactionSpeedForecast } = await exchangeAmount(ticker, amount);
-		dispatch({ type: "estimatedAmount", estimatedAmount, transactionSpeedForecast });
+		dispatch({
+			type: "estimatedAmount",
+			estimatedAmount,
+			transactionSpeedForecast,
+		});
 
 		// const { minAmount } = await minimalExchangeAmount(ticker);
 		// dispatch({ type: "minAmount", minAmount });
@@ -77,18 +70,14 @@ export const InputConvert = ({ state, dispatch }) => {
 				className="relative rounded flex items-stretch"
 				styled={{ backgroundColor: "#3D3D70", color: "white" }}
 			>
-				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">
-					You send
-				</label>
+				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">You send</label>
 				<Box
 					as="input"
 					type="text"
 					className="pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
 					styled={{ height: "70px", color: "white" }}
 					value={amount}
-					onChange={(evt) =>
-						dispatch({ type: "amount", amount: evt.target.value })
-					}
+					onChange={(evt) => dispatch({ type: "amount", amount: evt.target.value })}
 				/>
 				<button
 					type="button"
@@ -97,9 +86,7 @@ export const InputConvert = ({ state, dispatch }) => {
 				>
 					<div className="flex items-center space-x-2">
 						<img src={from?.image} className="w-6" />
-						<span className="uppercase text-xl font-medium">
-							{from?.ticker}
-						</span>
+						<span className="uppercase text-xl font-medium">{from?.ticker}</span>
 					</div>
 					<span className="w-4 h-4 transform translate-y-0.5">
 						<ChevronDownIcon />
@@ -127,12 +114,7 @@ export const InputConvert = ({ state, dispatch }) => {
 							{unitPrice} {to?.ticker}
 						</span>
 					</div>
-					<Box
-						as="button"
-						type="button"
-						className="text-xs"
-						styled={{ color: "#3bee81" }}
-					>
+					<Box as="button" type="button" className="text-xs" styled={{ color: "#3bee81" }}>
 						Expected rate
 					</Box>
 				</div>
@@ -152,15 +134,10 @@ export const InputConvert = ({ state, dispatch }) => {
 				className="relative rounded flex items-stretch"
 				styled={{ backgroundColor: "#3D3D70", color: "white" }}
 			>
-				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">
-					You get
-				</label>
+				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">You get</label>
 
 				{isLoading ? (
-					<Box
-						className="w-full pt-4 pl-5 pb-0 flex items-center"
-						styled={{ height: "70px" }}
-					>
+					<Box className="w-full pt-4 pl-5 pb-0 flex items-center" styled={{ height: "70px" }}>
 						<Spinner size="sm" />
 					</Box>
 				) : (
@@ -170,7 +147,7 @@ export const InputConvert = ({ state, dispatch }) => {
 						className="cursor-default pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
 						styled={{ height: "70px", color: "white" }}
 						readOnly
-						value={estimatedAmount}
+						defaultValue={estimatedAmount}
 					/>
 				)}
 				<button
@@ -180,9 +157,7 @@ export const InputConvert = ({ state, dispatch }) => {
 				>
 					<div className="flex items-center space-x-2">
 						<img src={to?.image} className="w-6" />
-						<span className="uppercase text-xl font-medium">
-							{to?.ticker}
-						</span>
+						<span className="uppercase text-xl font-medium">{to?.ticker}</span>
 					</div>
 					<span className="w-4 h-4 transform translate-y-0.5">
 						<ChevronDownIcon />
