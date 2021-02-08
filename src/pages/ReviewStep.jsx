@@ -3,7 +3,7 @@ import { useExchange } from "../hooks/use-exchange";
 import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 
 const { Components } = globalThis.ark;
-const { Box, Spinner } = Components;
+const { Box, Spinner, Checkbox } = Components;
 
 export const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 	const { createTransaction } = useExchange();
@@ -80,18 +80,32 @@ export const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 			</div>
 
 			<label className="mt-5">
-				<input
-					type="checkbox"
+				<Checkbox
 					value={isTermsChecked}
 					onChange={(evt) => setIsTermsChecked(evt.target.checked)}
+					className="mr-3"
 				/>
-				I've read and agree to the ChangeNOW <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>
+				I've read and agree to the ChangeNOW{" "}
+				<a href="https://changenow.io/terms-of-use" target="_blank">
+					Terms of Use
+				</a>{" "}
+				and{" "}
+				<a href="https://changenow.io/privacy-policy" target="_blank">
+					Privacy Policy
+				</a>
 			</label>
 
 			<div className="flex space-x-4">
-				<button onClick={createExchange} disabled={!isValid || isLoading}>
+				<Box
+					as="button"
+					onClick={createExchange}
+					disabled={!isValid || isLoading}
+					className="px-5 py-1 rounded border-2 text-lg text-white"
+					styled={{ borderColor: "transparent", backgroundColor: isValid ? "#3bee81" : "#b9b9b9" }}
+				>
 					{isLoading ? <Spinner size="sm" /> : <span>Confirm</span>}
-				</button>
+				</Box>
+
 				<Box
 					as="button"
 					onClick={onBack}

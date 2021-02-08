@@ -7,7 +7,7 @@ import { SwitchIcon } from "../icons/SwitchIcon";
 const { Components } = globalThis.ark;
 const { Box, Spinner } = Components;
 
-export const InputConvert = ({ state, dispatch }) => {
+export const InputConvert = ({ state, dispatch, isTransparent }) => {
 	const { amount, from, to, currencies, estimatedAmount } = state;
 	const { exchangeAmount } = useExchange();
 
@@ -67,21 +67,25 @@ export const InputConvert = ({ state, dispatch }) => {
 	return (
 		<div>
 			<Box
-				className="relative rounded flex items-stretch"
-				styled={{ backgroundColor: "#3D3D70", color: "white" }}
+				className={`relative rounded flex items-stretch ${
+					isTransparent ? "text-theme-secondary-900 border border-theme-secondary-400" : "text-white"
+				}`}
+				styled={{ backgroundColor: isTransparent ? "transparent" : "#3D3D70" }}
 			>
 				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">You send</label>
 				<Box
 					as="input"
 					type="text"
 					className="pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
-					styled={{ height: "70px", color: "white" }}
+					styled={{ height: "70px" }}
 					value={amount}
 					onChange={(evt) => dispatch({ type: "amount", amount: evt.target.value })}
 				/>
 				<button
 					type="button"
-					className="w-3/5 border-l border-theme-secondary-700 px-4 flex items-center justify-between"
+					className={`w-3/5  px-4 flex items-center justify-between border-l ${
+						isTransparent ? "border-theme-secondary-400" : "border-theme-secondary-700"
+					}`}
 					onClick={() => setIsFromFilterOpen((prev) => !prev)}
 				>
 					<div className="flex items-center space-x-2">
@@ -107,6 +111,16 @@ export const InputConvert = ({ state, dispatch }) => {
 
 			<Box className="flex items-center justify-between pr-2 pl-10 py-3 relative">
 				<div className="flex items-center space-x-2">
+					<span
+						className={`absolute w-3 h-3 left-0 transform translate-x-3.5 rounded-full ml-px ${
+							isTransparent ? "bg-theme-secondary-400" : "bg-theme-secondary-700"
+						}`}
+					/>
+					<span
+						className={`absolute top-0 w-0.5 h-full -left-2 transform translate-x-5 ${
+							isTransparent ? "bg-theme-secondary-400" : "bg-theme-secondary-700"
+						}`}
+					/>
 					<div className="text-xs flex space-x-1 uppercase">
 						<span>1 {from?.ticker}</span>
 						<span>≈</span>
@@ -131,8 +145,10 @@ export const InputConvert = ({ state, dispatch }) => {
 			</Box>
 
 			<Box
-				className="relative rounded flex items-stretch"
-				styled={{ backgroundColor: "#3D3D70", color: "white" }}
+				className={`relative rounded flex items-stretch ${
+					isTransparent ? "text-theme-secondary-900 border border-theme-secondary-400" : "text-white"
+				}`}
+				styled={{ backgroundColor: isTransparent ? "transparent" : "#3D3D70" }}
 			>
 				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">You get</label>
 
@@ -145,14 +161,16 @@ export const InputConvert = ({ state, dispatch }) => {
 						as="input"
 						type="text"
 						className="cursor-default pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
-						styled={{ height: "70px", color: "white" }}
+						styled={{ height: "70px" }}
 						readOnly
 						defaultValue={estimatedAmount}
 					/>
 				)}
 				<button
 					type="button"
-					className="w-3/5 border-l border-theme-secondary-700 px-4 flex items-center justify-between"
+					className={`w-3/5  px-4 flex items-center justify-between border-l ${
+						isTransparent ? "border-theme-secondary-400" : "border-theme-secondary-700"
+					}`}
 					onClick={() => setIsToFilterOpen((prev) => !prev)}
 				>
 					<div className="flex items-center space-x-2">

@@ -3,16 +3,24 @@ import { InputConvert } from "../components/InputConvert";
 import { useWalletContext } from "../context/WalletProvider";
 
 const { Components } = globalThis.ark;
-const { Box } = Components;
+const { Box, Input, Select } = Components;
 
 export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
-	const { recipient, from, to, refundAdress } = state;
+	const { recipient, from, to, refundAdress, amount, estimatedAmount } = state;
 	const walletContext = useWalletContext();
 
 	const [showRefundAddressInput, setShowRefundAddressInput] = React.useState(false);
 
 	const wallets = walletContext.profile().wallets();
 	const availableRecipients = wallets.filter((wallet) => wallet.coin.toLowerCase() === to.ticker.toLowerCase());
+
+	const isValid = React.useMemo(() => {
+		if (showRefundAddressInput && !refundAdress) {
+			return false;
+		}
+
+		return recipient && amount && estimatedAmount;
+	}, [state, showRefundAddressInput]);
 
 	return (
 		<div className="inline-flex flex-col space-y-5">
@@ -23,75 +31,88 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 				<span className="text-theme-secondary-700">Send To</span>
 			</div>
 
-			<InputConvert state={state} dispatch={dispatch} />
+			<InputConvert state={state} dispatch={dispatch} isTransparent />
 
-			<div className="flex items-center justify-between">
-				<label htmlFor="recipient">Recicipent Wallet</label>
-				{showRefundAddressInput ? (
-					<button
-						className="text-sm"
-						onClick={() => {
+			<div className="flex flex-col space-y-2">
+				<div className="flex items-center justify-between">
+					<label htmlFor="recipient">Recipient Wallet</label>
+					{showRefundAddressInput ? (
+						<button
+							className="text-sm"
+							onClick={() => {
+								dispatch({
+									type: "refundAddress",
+									refundAdress: undefined,
+								});
+								setShowRefundAddressInput(false);
+							}}
+						>
+							Remove refund address
+						</button>
+					) : (
+						<button className="text-sm" onClick={() => setShowRefundAddressInput(true)}>
+							Add refund address
+						</button>
+					)}
+				</div>
+
+				{availableRecipients.length ? (
+					<Input
+						as="select"
+						name="recipient"
+						value={recipient}
+						onChange={(evt) =>
 							dispatch({
-								type: "refundAddress",
-								refundAdress: undefined,
-							});
-							setShowRefundAddressInput(false);
-						}}
+								type: "recipient",
+								recipient: evt.target.value,
+							})
+						}
 					>
-						Remove refund address
-					</button>
+						<option value="">Select recipient address</option>
+						{availableRecipients.map((item) => (
+							<option key={item.address} value={item.address}>
+								{item.address}
+							</option>
+						))}
+					</Input>
 				) : (
-					<button className="text-sm" onClick={() => setShowRefundAddressInput(true)}>
-						Add refund address
-					</button>
+					<Input
+						name="recipient"
+						type="text"
+						value={recipient}
+						onChange={(evt) =>
+							dispatch({
+								type: "recipient",
+								recipient: evt.target.value,
+							})
+						}
+					/>
 				)}
 			</div>
 
-			{availableRecipients.length ? (
-				<select
-					name="recipient"
-					value={recipient}
-					onChange={(evt) =>
-						dispatch({
-							type: "recipient",
-							recipient: evt.target.value,
-						})
-					}
-				>
-					<option value="">Select recipient address</option>
-					{availableRecipients.map((item) => (
-						<option key={item.address} value={item.address}>
-							{item.address}
-						</option>
-					))}
-				</select>
-			) : (
-				<input
-					name="recipient"
-					type="text"
-					value={recipient}
-					onChange={(evt) =>
-						dispatch({
-							type: "recipient",
-							recipient: evt.target.value,
-						})
-					}
-				/>
-			)}
-
 			{showRefundAddressInput ? (
 				<div className="flex flex-col space-y-2">
-					<label htmlFor="refund-address">Refund Wallet</label>
-					<input
+					<label htmlFor="refund-address">Refund Address</label>
+					<Input
 						name="refund-address"
 						type="text"
-						placeholder={`Enter ${from.ticker} refund addresss (Optional)`}
+						placeholder={`Enter ${from.ticker.toUpperCase()} refund addresss (Optional)`}
+						value={refundAdress}
+						onChange={(evt) => dispatch({ type: "refundAddress", refundAdress: evt.target.value })}
 					/>
 				</div>
 			) : null}
 
 			<div className="flex space-x-4">
-				<button onClick={onNext}>Next</button>
+				<Box
+					as="button"
+					onClick={onNext}
+					disabled={!isValid}
+					className="px-5 py-1 rounded border-2 text-lg text-white"
+					styled={{ borderColor: "transparent", backgroundColor: isValid ? "#3bee81" : "#b9b9b9" }}
+				>
+					Next
+				</Box>
 				<Box
 					as="button"
 					onClick={onBack}
