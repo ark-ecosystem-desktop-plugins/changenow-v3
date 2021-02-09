@@ -6,8 +6,8 @@ const swapReducer = (state, action) => {
 			return {
 				...state,
 				currencies: action.currencies,
-				from: action.currencies.find((currency) => currency.ticker === "btc"),
-				to: action.currencies.find((currency) => currency.ticker === "ark"),
+				from: state.from || action.currencies.find((currency) => currency.ticker === "btc"),
+				to: state.to || action.currencies.find((currency) => currency.ticker === "ark"),
 			};
 		}
 		case "from": {
@@ -103,6 +103,15 @@ const swapReducer = (state, action) => {
 			return {
 				...state,
 				activeTab: action.activeTab,
+			};
+		}
+		case "isAnonymous": {
+			return {
+				...state,
+				[action.mode]: {
+					...state[action.mode],
+					isAnonymous: action.isAnonymous,
+				},
 			};
 		}
 	}

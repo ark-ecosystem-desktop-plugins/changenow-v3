@@ -210,12 +210,18 @@ const useExchange = () => {
 		return response.json();
 	};
 
+	const getCurrencyInfo = async (ticker) => {
+		const response = await client.get(`${API_BASE_URL}/currencies/${ticker}`);
+		return response.json();
+	};
+
 	return {
 		getAllCurrencies,
 		exchangeAmount,
 		minimalExchangeAmount,
 		createTransaction,
 		getTransactionStatus,
+		getCurrencyInfo,
 	};
 };
 
@@ -277,7 +283,7 @@ const InputAmount = /*#__PURE__*/ React__default["default"].forwardRef((props, r
 });
 const InputConvert = ({ state, dispatch, isTransparent }) => {
 	const { amount, from, to, currencies, estimatedAmount, minAmount } = state;
-	const { exchangeAmount, minimalExchangeAmount } = useExchange();
+	const { exchangeAmount, minimalExchangeAmount, getCurrencyInfo } = useExchange();
 	const [isLoading, setIsLoading] = React__default["default"].useState(false);
 	const [isFromFilterOpen, setIsFromFilterOpen] = React__default["default"].useState(false);
 	const [fromFilterQuery, setFromFilterQuery] = React__default["default"].useState("");
@@ -339,6 +345,25 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 			type: "toggleCurrencies",
 		});
 
+	const fetchCurrencyInfo = async (mode, ticker) => {
+		const result = await getCurrencyInfo(ticker);
+		dispatch({
+			type: "isAnonymous",
+			isAnonymous: result.isAnonymous,
+			mode,
+		});
+	};
+
+	React__default["default"].useEffect(() => {
+		if (from?.ticker) {
+			fetchCurrencyInfo("from", from.ticker);
+		}
+	}, [from?.ticker]);
+	React__default["default"].useEffect(() => {
+		if (to?.ticker) {
+			fetchCurrencyInfo("to", to.ticker);
+		}
+	}, [to?.ticker]);
 	React__default["default"].useEffect(() => {
 		convertAmount();
 	}, [convertAmount]);
@@ -1430,7 +1455,7 @@ const validateAddress = (currency, address) => {
 };
 
 const { Components: Components$3 } = globalThis.ark;
-const { Box: Box$3, Input, Select } = Components$3;
+const { Box: Box$3, Input } = Components$3;
 const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 	const { recipient, from, to, refundAddress, amount, estimatedAmount } = state;
 	const walletContext = useWalletContext();
@@ -1440,12 +1465,17 @@ const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 	const isValidRecipient = recipient?.length && validateAddress(to.ticker, recipient);
 	const isValidRefundAddress = refundAddress?.length && validateAddress(from.ticker, recipient);
 	const isValid = React__default["default"].useMemo(() => {
-		if (showRefundAddressInput && !refundAddress) {
+		if (showRefundAddressInput && !isValidRefundAddress) {
 			return false;
 		}
 
 		return isValidRecipient && amount && estimatedAmount;
 	}, [state, showRefundAddressInput]);
+	React__default["default"].useEffect(() => {
+		if (from?.isAnonymous) {
+			setShowRefundAddressInput(true);
+		}
+	}, [from]);
 	return /*#__PURE__*/ React__default["default"].createElement(
 		"div",
 		{
@@ -1494,28 +1524,34 @@ const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 					},
 					"Recipient Wallet",
 				),
-				showRefundAddressInput
-					? /*#__PURE__*/ React__default["default"].createElement(
-							"button",
-							{
-								className: "text-sm",
-								onClick: () => {
-									dispatch({
-										type: "refundAddress",
-										refundAddress: undefined,
-									});
-									setShowRefundAddressInput(false);
-								},
-							},
-							"Remove refund address",
-					  )
+				from.isAnonymous
+					? null
 					: /*#__PURE__*/ React__default["default"].createElement(
-							"button",
-							{
-								className: "text-sm",
-								onClick: () => setShowRefundAddressInput(true),
-							},
-							"+ Add refund address",
+							React__default["default"].Fragment,
+							null,
+							showRefundAddressInput
+								? /*#__PURE__*/ React__default["default"].createElement(
+										"button",
+										{
+											className: "text-sm",
+											onClick: () => {
+												dispatch({
+													type: "refundAddress",
+													refundAddress: undefined,
+												});
+												setShowRefundAddressInput(false);
+											},
+										},
+										"Remove refund address",
+								  )
+								: /*#__PURE__*/ React__default["default"].createElement(
+										"button",
+										{
+											className: "text-sm",
+											onClick: () => setShowRefundAddressInput(true),
+										},
+										"+ Add refund address",
+								  ),
 					  ),
 			),
 			availableRecipients.length
@@ -1577,7 +1613,9 @@ const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 					/*#__PURE__*/ React__default["default"].createElement(Input, {
 						name: "refund-address",
 						type: "text",
-						placeholder: `Enter ${from.ticker.toUpperCase()} refund addresss (Optional)`,
+						placeholder: `Enter ${from.ticker.toUpperCase()} refund addresss (${
+							from.isAnonymous ? "Required" : "Optional"
+						})`,
 						value: refundAddress,
 						onChange: (evt) =>
 							dispatch({
@@ -2115,8 +2153,8 @@ const swapReducer = (state, action) => {
 			return {
 				...state,
 				currencies: action.currencies,
-				from: action.currencies.find((currency) => currency.ticker === "btc"),
-				to: action.currencies.find((currency) => currency.ticker === "ark"),
+				from: state.from || action.currencies.find((currency) => currency.ticker === "btc"),
+				to: state.to || action.currencies.find((currency) => currency.ticker === "ark"),
 			};
 		}
 
@@ -2199,6 +2237,10 @@ const swapReducer = (state, action) => {
 
 		case "activeTab": {
 			return { ...state, activeTab: action.activeTab };
+		}
+
+		case "isAnonymous": {
+			return { ...state, [action.mode]: { ...state[action.mode], isAnonymous: action.isAnonymous } };
 		}
 	}
 };

@@ -4,7 +4,7 @@ import { useWalletContext } from "../context/WalletProvider";
 import { validateAddress } from "../utils/validators";
 
 const { Components } = globalThis.ark;
-const { Box, Input, Select } = Components;
+const { Box, Input } = Components;
 
 export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 	const { recipient, from, to, refundAddress, amount, estimatedAmount } = state;
@@ -19,12 +19,18 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 	const isValidRefundAddress = refundAddress?.length && validateAddress(from.ticker, recipient);
 
 	const isValid = React.useMemo(() => {
-		if (showRefundAddressInput && !refundAddress) {
+		if (showRefundAddressInput && !isValidRefundAddress) {
 			return false;
 		}
 
 		return isValidRecipient && amount && estimatedAmount;
 	}, [state, showRefundAddressInput]);
+
+	React.useEffect(() => {
+		if (from?.isAnonymous) {
+			setShowRefundAddressInput(true);
+		}
+	}, [from]);
 
 	return (
 		<div className="inline-flex flex-col space-y-5">
@@ -40,23 +46,27 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 			<div className="flex flex-col space-y-2">
 				<div className="flex items-center justify-between">
 					<label htmlFor="recipient">Recipient Wallet</label>
-					{showRefundAddressInput ? (
-						<button
-							className="text-sm"
-							onClick={() => {
-								dispatch({
-									type: "refundAddress",
-									refundAddress: undefined,
-								});
-								setShowRefundAddressInput(false);
-							}}
-						>
-							Remove refund address
-						</button>
-					) : (
-						<button className="text-sm" onClick={() => setShowRefundAddressInput(true)}>
-							+ Add refund address
-						</button>
+					{from.isAnonymous ? null : (
+						<>
+							{showRefundAddressInput ? (
+								<button
+									className="text-sm"
+									onClick={() => {
+										dispatch({
+											type: "refundAddress",
+											refundAddress: undefined,
+										});
+										setShowRefundAddressInput(false);
+									}}
+								>
+									Remove refund address
+								</button>
+							) : (
+								<button className="text-sm" onClick={() => setShowRefundAddressInput(true)}>
+									+ Add refund address
+								</button>
+							)}
+						</>
 					)}
 				</div>
 
@@ -101,7 +111,9 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 					<Input
 						name="refund-address"
 						type="text"
-						placeholder={`Enter ${from.ticker.toUpperCase()} refund addresss (Optional)`}
+						placeholder={`Enter ${from.ticker.toUpperCase()} refund addresss (${
+							from.isAnonymous ? "Required" : "Optional"
+						})`}
 						value={refundAddress}
 						onChange={(evt) => dispatch({ type: "refundAddress", refundAddress: evt.target.value })}
 						isInvalid={refundAddress && !isValidRefundAddress}

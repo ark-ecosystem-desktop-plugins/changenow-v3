@@ -38,11 +38,17 @@ export const useExchange = () => {
 		return response.json();
 	};
 
+	const getCurrencyInfo = async (ticker) => {
+		const response = await client.get(`${API_BASE_URL}/currencies/${ticker}`);
+		return response.json();
+	};
+
 	return {
 		getAllCurrencies,
 		exchangeAmount,
 		minimalExchangeAmount,
 		createTransaction,
 		getTransactionStatus,
+		getCurrencyInfo,
 	};
 };

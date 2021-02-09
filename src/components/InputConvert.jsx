@@ -22,7 +22,7 @@ const InputAmount = React.forwardRef((props, ref) => {
 
 export const InputConvert = ({ state, dispatch, isTransparent }) => {
 	const { amount, from, to, currencies, estimatedAmount, minAmount } = state;
-	const { exchangeAmount, minimalExchangeAmount } = useExchange();
+	const { exchangeAmount, minimalExchangeAmount, getCurrencyInfo } = useExchange();
 
 	const [isLoading, setIsLoading] = React.useState(false);
 
@@ -85,6 +85,23 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 	}, [amount, from, to]);
 
 	const toggleCurrencies = () => dispatch({ type: "toggleCurrencies" });
+
+	const fetchCurrencyInfo = async (mode, ticker) => {
+		const result = await getCurrencyInfo(ticker);
+		dispatch({ type: "isAnonymous", isAnonymous: result.isAnonymous, mode });
+	};
+
+	React.useEffect(() => {
+		if (from?.ticker) {
+			fetchCurrencyInfo("from", from.ticker);
+		}
+	}, [from?.ticker]);
+
+	React.useEffect(() => {
+		if (to?.ticker) {
+			fetchCurrencyInfo("to", to.ticker);
+		}
+	}, [to?.ticker]);
 
 	React.useEffect(() => {
 		convertAmount();
