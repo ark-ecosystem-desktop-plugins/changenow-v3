@@ -1,12 +1,13 @@
 import React from "react";
 import { InputConvert } from "../components/InputConvert";
 import { useWalletContext } from "../context/WalletProvider";
+import { validateAddress } from "../utils/validators";
 
 const { Components } = globalThis.ark;
 const { Box, Input, Select } = Components;
 
 export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
-	const { recipient, from, to, refundAdress, amount, estimatedAmount } = state;
+	const { recipient, from, to, refundAddress, amount, estimatedAmount } = state;
 	const walletContext = useWalletContext();
 
 	const [showRefundAddressInput, setShowRefundAddressInput] = React.useState(false);
@@ -14,12 +15,15 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 	const wallets = walletContext.profile().wallets();
 	const availableRecipients = wallets.filter((wallet) => wallet.coin.toLowerCase() === to.ticker.toLowerCase());
 
+	const isValidRecipient = recipient?.length && validateAddress(to.ticker, recipient);
+	const isValidRefundAddress = refundAddress?.length && validateAddress(from.ticker, recipient);
+
 	const isValid = React.useMemo(() => {
-		if (showRefundAddressInput && !refundAdress) {
+		if (showRefundAddressInput && !refundAddress) {
 			return false;
 		}
 
-		return recipient && amount && estimatedAmount;
+		return isValidRecipient && amount && estimatedAmount;
 	}, [state, showRefundAddressInput]);
 
 	return (
@@ -42,7 +46,7 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 							onClick={() => {
 								dispatch({
 									type: "refundAddress",
-									refundAdress: undefined,
+									refundAddress: undefined,
 								});
 								setShowRefundAddressInput(false);
 							}}
@@ -86,6 +90,7 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 								recipient: evt.target.value,
 							})
 						}
+						isInvalid={recipient && !isValidRecipient}
 					/>
 				)}
 			</div>
@@ -97,8 +102,9 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 						name="refund-address"
 						type="text"
 						placeholder={`Enter ${from.ticker.toUpperCase()} refund addresss (Optional)`}
-						value={refundAdress}
-						onChange={(evt) => dispatch({ type: "refundAddress", refundAdress: evt.target.value })}
+						value={refundAddress}
+						onChange={(evt) => dispatch({ type: "refundAddress", refundAddress: evt.target.value })}
+						isInvalid={refundAddress && !isValidRefundAddress}
 					/>
 				</div>
 			) : null}

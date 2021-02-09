@@ -5,6 +5,8 @@ import { ArrowRightIcon } from "../icons/ArrowRightIcon";
 const { Components } = globalThis.ark;
 const { Box, Spinner, Checkbox } = Components;
 
+import { validateAddress } from "../utils/validators";
+
 export const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 	const { createTransaction } = useExchange();
 	const { amount, estimatedAmount, recipient, from, to, transactionSpeedForecast } = state;

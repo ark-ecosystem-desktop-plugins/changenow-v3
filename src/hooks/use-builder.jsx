@@ -84,7 +84,7 @@ const swapReducer = (state, action) => {
 				activeTab: 1,
 				refundAddress: undefined,
 				recipient: "",
-				transaction: {}
+				transaction: {},
 			};
 		}
 		case "restore": {

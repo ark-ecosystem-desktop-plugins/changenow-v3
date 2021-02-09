@@ -33,7 +33,7 @@ export const TransactionStep = ({ state, dispatch }) => {
 		walletContext.store().data().forget("state");
 		walletContext.store().persist();
 		dispatch({ type: "restart" });
-	}
+	};
 
 	React.useEffect(() => {
 		if (isExchangeFinished && timerRef.current) {

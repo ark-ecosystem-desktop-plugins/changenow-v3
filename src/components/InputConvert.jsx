@@ -17,8 +17,8 @@ const InputAmount = React.forwardRef((props, ref) => {
 			ref={ref}
 			{...props}
 		/>
-	)
-})
+	);
+});
 
 export const InputConvert = ({ state, dispatch, isTransparent }) => {
 	const { amount, from, to, currencies, estimatedAmount, minAmount } = state;
@@ -110,7 +110,7 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 				<InputCurrency
 					as={InputAmount}
 					value={amount}
-					onChange={currency => dispatch({ type: "amount", amount: currency.value/1e8 })}
+					onChange={(currency) => dispatch({ type: "amount", amount: currency.value / 1e8 })}
 				/>
 				<button
 					type="button"
