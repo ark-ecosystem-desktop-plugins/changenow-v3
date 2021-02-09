@@ -31,6 +31,10 @@ export const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 				params.refundAddress = state.refundAddress;
 			}
 
+			if (state.externalId) {
+				params.externalId = state.externalId;
+			}
+
 			const transaction = await createTransaction(params);
 			dispatch({ type: "transaction", transaction });
 			onConfirm?.();

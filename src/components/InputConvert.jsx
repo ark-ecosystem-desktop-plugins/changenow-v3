@@ -92,6 +92,7 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 			type: "additionalCurrencyInfo",
 			payload: {
 				isAnonymous: result.isAnonymous,
+				externalIdName: result.externalIdName,
 				transactionExplorerMask: result.transactionExplorerMask,
 				addressExplorerMask: result.addressExplorerMask,
 			},

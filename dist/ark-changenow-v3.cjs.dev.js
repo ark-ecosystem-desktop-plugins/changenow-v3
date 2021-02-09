@@ -351,6 +351,7 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 			type: "additionalCurrencyInfo",
 			payload: {
 				isAnonymous: result.isAnonymous,
+				externalIdName: result.externalIdName,
 				transactionExplorerMask: result.transactionExplorerMask,
 				addressExplorerMask: result.addressExplorerMask,
 			},
@@ -1457,19 +1458,39 @@ const validateAddress = (currency, address) => {
 
 	return true;
 };
+const validateExternalId = (currency, id) => {
+	const ticker = currency.toLowerCase();
+
+	if (currenciesRules[ticker] && currenciesRules[ticker].regExTag) {
+		const matches = id.match(currenciesRules[ticker].regExTag);
+
+		if (matches) {
+			return true;
+		}
+
+		return false;
+	}
+
+	return true;
+};
 
 const { Components: Components$3 } = globalThis.ark;
 const { Box: Box$3, Input } = Components$3;
 const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
-	const { recipient, from, to, refundAddress, amount, estimatedAmount } = state;
+	const { recipient, from, to, refundAddress, amount, estimatedAmount, externalId } = state;
 	const walletContext = useWalletContext();
 	const [showRefundAddressInput, setShowRefundAddressInput] = React__default["default"].useState(false);
 	const wallets = walletContext.profile().wallets();
 	const availableRecipients = wallets.filter((wallet) => wallet.coin.toLowerCase() === to.ticker.toLowerCase());
 	const isValidRecipient = recipient?.length && validateAddress(to.ticker, recipient);
 	const isValidRefundAddress = refundAddress?.length && validateAddress(from.ticker, recipient);
+	const isValidExternalId = externalId?.length && validateExternalId(to.ticker, externalId);
 	const isValid = React__default["default"].useMemo(() => {
 		if (showRefundAddressInput && !isValidRefundAddress) {
+			return false;
+		}
+
+		if (to.hasExternalId && !isValidExternalId) {
 			return false;
 		}
 
@@ -1601,6 +1622,20 @@ const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 						isInvalid: recipient && !isValidRecipient,
 				  }),
 		),
+		to.hasExternalId
+			? /*#__PURE__*/ React__default["default"].createElement(Input, {
+					name: "external-id",
+					type: "text",
+					placeholder: `${to.externalIdName} (Optional)`,
+					value: externalId,
+					onChange: (evt) =>
+						dispatch({
+							type: "externalId",
+							externalId: evt.target.value,
+						}),
+					isInvalid: externalId && !isValidExternalId,
+			  })
+			: null,
 		showRefundAddressInput
 			? /*#__PURE__*/ React__default["default"].createElement(
 					"div",
@@ -1713,6 +1748,10 @@ const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 
 			if (state.refundAddress) {
 				params.refundAddress = state.refundAddress;
+			}
+
+			if (state.externalId) {
+				params.externalId = state.externalId;
 			}
 
 			const transaction = await createTransaction(params);
@@ -2976,6 +3015,7 @@ const swapReducer = (state, action) => {
 				estimatedAmount: undefined,
 				transactionSpeedForecast: undefined,
 				minAmount: undefined,
+				refundAddress: "",
 			};
 		}
 
@@ -2986,6 +3026,7 @@ const swapReducer = (state, action) => {
 				estimatedAmount: undefined,
 				transactionSpeedForecast: undefined,
 				minAmount: undefined,
+				externalId: "",
 			};
 		}
 
@@ -3035,7 +3076,7 @@ const swapReducer = (state, action) => {
 		}
 
 		case "restart": {
-			return { ...state, activeTab: 1, refundAddress: undefined, recipient: "", transaction: {} };
+			return { ...state, activeTab: 1, refundAddress: undefined, externalId: "", recipient: "", transaction: {} };
 		}
 
 		case "restore": {
@@ -3052,6 +3093,10 @@ const swapReducer = (state, action) => {
 
 		case "additionalCurrencyInfo": {
 			return { ...state, [action.mode]: { ...state[action.mode], ...action.payload } };
+		}
+
+		case "externalId": {
+			return { ...state, externalId: action.externalId };
 		}
 	}
 };

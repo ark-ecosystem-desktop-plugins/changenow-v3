@@ -17,6 +17,7 @@ const swapReducer = (state, action) => {
 				estimatedAmount: undefined,
 				transactionSpeedForecast: undefined,
 				minAmount: undefined,
+				refundAddress: "",
 			};
 		}
 		case "to": {
@@ -26,6 +27,7 @@ const swapReducer = (state, action) => {
 				estimatedAmount: undefined,
 				transactionSpeedForecast: undefined,
 				minAmount: undefined,
+				externalId: "",
 			};
 		}
 		case "toggleCurrencies": {
@@ -83,6 +85,7 @@ const swapReducer = (state, action) => {
 				...state,
 				activeTab: 1,
 				refundAddress: undefined,
+				externalId: "",
 				recipient: "",
 				transaction: {},
 			};
@@ -112,6 +115,12 @@ const swapReducer = (state, action) => {
 					...state[action.mode],
 					...action.payload,
 				},
+			};
+		}
+		case "externalId": {
+			return {
+				...state,
+				externalId: action.externalId,
 			};
 		}
 	}

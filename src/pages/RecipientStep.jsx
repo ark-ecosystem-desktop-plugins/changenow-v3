@@ -1,13 +1,13 @@
 import React from "react";
 import { InputConvert } from "../components/InputConvert";
 import { useWalletContext } from "../context/WalletProvider";
-import { validateAddress } from "../utils/validators";
+import { validateAddress, validateExternalId } from "../utils/validators";
 
 const { Components } = globalThis.ark;
 const { Box, Input } = Components;
 
 export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
-	const { recipient, from, to, refundAddress, amount, estimatedAmount } = state;
+	const { recipient, from, to, refundAddress, amount, estimatedAmount, externalId } = state;
 	const walletContext = useWalletContext();
 
 	const [showRefundAddressInput, setShowRefundAddressInput] = React.useState(false);
@@ -17,9 +17,14 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 
 	const isValidRecipient = recipient?.length && validateAddress(to.ticker, recipient);
 	const isValidRefundAddress = refundAddress?.length && validateAddress(from.ticker, recipient);
+	const isValidExternalId = externalId?.length && validateExternalId(to.ticker, externalId);
 
 	const isValid = React.useMemo(() => {
 		if (showRefundAddressInput && !isValidRefundAddress) {
+			return false;
+		}
+
+		if (to.hasExternalId && !isValidExternalId) {
 			return false;
 		}
 
@@ -104,6 +109,17 @@ export const RecipientStep = ({ state, dispatch, onNext, onBack }) => {
 					/>
 				)}
 			</div>
+
+			{to.hasExternalId ? (
+				<Input
+					name="external-id"
+					type="text"
+					placeholder={`${to.externalIdName} (Optional)`}
+					value={externalId}
+					onChange={(evt) => dispatch({ type: "externalId", externalId: evt.target.value })}
+					isInvalid={externalId && !isValidExternalId}
+				/>
+			) : null}
 
 			{showRefundAddressInput ? (
 				<div className="flex flex-col space-y-2">
