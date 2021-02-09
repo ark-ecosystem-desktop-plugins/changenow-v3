@@ -5,7 +5,7 @@ import { useWalletContext } from "../context/WalletProvider";
 import { statuses, finishedStatuses } from "../contants";
 import { CheckIcon } from "../icons/CheckIcon";
 
-const { Box, Spinner } = globalThis.ark.Components;
+const { Box, Spinner, Clipboard } = globalThis.ark.Components;
 
 export const TransactionStep = ({ state, dispatch, onRestart }) => {
 	const { amount, transaction } = state;
@@ -68,19 +68,19 @@ export const TransactionStep = ({ state, dispatch, onRestart }) => {
 				<dt>To address</dt>
 				<dd className="flex items-center space-x-3 text-2xl font-bold">
 					{transaction.payinAddress}
-					<button>
+					<Clipboard data={transaction.payinAddress}>
 						<CopyIcon className="w-5 h-5 text-theme-secondary-text ml-2" />
-					</button>
+					</Clipboard>
 				</dd>
 
 				{transaction.payinExtraId ? (
 					<>
 						<dt>{transaction.payinExtraIdName}</dt>
 						<dd className="flex items-center space-x-3 text-2xl font-bold">
-							{payinExtraId}
-							<button>
+							{transaction.payinExtraId}
+							<Clipboard data={transaction.payinExtraId}>
 								<CopyIcon className="w-5 h-5 text-theme-secondary-text ml-2" />
-							</button>
+							</Clipboard>
 						</dd>
 					</>
 				) : null}
