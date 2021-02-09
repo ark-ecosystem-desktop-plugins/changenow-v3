@@ -348,8 +348,12 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 	const fetchCurrencyInfo = async (mode, ticker) => {
 		const result = await getCurrencyInfo(ticker);
 		dispatch({
-			type: "isAnonymous",
-			isAnonymous: result.isAnonymous,
+			type: "additionalCurrencyInfo",
+			payload: {
+				isAnonymous: result.isAnonymous,
+				transactionExplorerMask: result.transactionExplorerMask,
+				addressExplorerMask: result.addressExplorerMask,
+			},
 			mode,
 		});
 	};
@@ -1912,6 +1916,813 @@ const ReviewStep = ({ state, dispatch, onConfirm, onBack }) => {
 	);
 };
 
+const CopyIcon = (props) => {
+	return /*#__PURE__*/ React__default["default"].createElement(
+		"svg",
+		_extends(
+			{
+				xmlns: "http://www.w3.org/2000/svg",
+				fill: "none",
+				viewBox: "0 0 24 24",
+				stroke: "currentColor",
+			},
+			props,
+		),
+		/*#__PURE__*/ React__default["default"].createElement("path", {
+			strokeLinecap: "round",
+			strokeLinejoin: "round",
+			strokeWidth: 2,
+			d:
+				"M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z",
+		}),
+	);
+};
+
+const statuses = {
+	waiting: "waiting",
+	confirming: "confirming",
+	exchanging: "exchanging",
+	sending: "sending",
+	finished: "finished",
+	failed: "failed",
+	refunded: "refunded",
+	expired: "expired",
+};
+const finishedStatuses = ["finished", "failed", "refunded", "expired"];
+
+const CheckCircleIcon = (props) => {
+	return /*#__PURE__*/ React__default["default"].createElement(
+		"svg",
+		_extends(
+			{
+				xmlns: "http://www.w3.org/2000/svg",
+				fill: "none",
+				viewBox: "0 0 24 24",
+				stroke: "currentColor",
+			},
+			props,
+		),
+		/*#__PURE__*/ React__default["default"].createElement("path", {
+			strokeLinecap: "round",
+			strokeLinejoin: "round",
+			strokeWidth: 2,
+			d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+		}),
+	);
+};
+
+const { Box: Box$5, Spinner: Spinner$2, Clipboard } = globalThis.ark.Components;
+const TransactionStep = ({ state, dispatch }) => {
+	const { amount, transaction } = state;
+	const { getTransactionStatus } = useExchange();
+	const walletContext = useWalletContext();
+	const timerRef = React__default["default"].useRef();
+	const isDepositConfirmed = transaction.status === statuses.exchanging || transaction.status === statuses.sending;
+	const isSending = transaction.status === statuses.sending;
+	const isExchangeFinished = React__default["default"].useMemo(() => finishedStatuses.includes(transaction.status), [
+		transaction.status,
+	]);
+	const isExchangeFinishedSuccess = transaction.status === statuses.finished;
+	const transactionId = transaction.id;
+	const verifyTransactionStatus = React__default["default"].useCallback(async () => {
+		try {
+			const response = await getTransactionStatus(transactionId);
+			dispatch({
+				type: "status",
+				payload: {
+					status: response.status,
+				},
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}, [transactionId]);
+
+	const onRestart = () => {
+		walletContext.store().data().forget("state");
+		walletContext.store().persist();
+		dispatch({
+			type: "restart",
+		});
+	};
+
+	React__default["default"].useEffect(() => {
+		if (isExchangeFinished && timerRef.current) {
+			clearInterval(timerRef.current);
+		}
+	}, [isExchangeFinished]);
+	React__default["default"].useEffect(() => {
+		const timer = walletContext.timers().setInterval(() => verifyTransactionStatus(), 10000);
+		timerRef.current = timer;
+		return () => {
+			walletContext.timers().clearInterval(timerRef.current);
+		};
+	}, [verifyTransactionStatus]);
+	return /*#__PURE__*/ React__default["default"].createElement(
+		"div",
+		{
+			className: "inline-flex flex-col space-y-4 w-full",
+		},
+		/*#__PURE__*/ React__default["default"].createElement(
+			"div",
+			{
+				className: "flex items-center justify-between",
+			},
+			/*#__PURE__*/ React__default["default"].createElement(
+				"div",
+				{
+					className: "flex items-center space-x-3 font-semibold",
+				},
+				/*#__PURE__*/ React__default["default"].createElement(
+					"span",
+					{
+						className:
+							"rounded-full border-2 border-theme-success-500 flex items-center justify-center w-8 h-8",
+					},
+					"3",
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"span",
+					{
+						className: "text-theme-secondary-700",
+					},
+					"Sending",
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"span",
+					{
+						className: "text-theme-secondary-500 font-medium",
+					},
+					"Transaction Id: ",
+					transaction.id,
+				),
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				Box$5,
+				{
+					as: "button",
+					type: "button",
+					styled: {
+						color: "#3bee81",
+					},
+					onClick: onRestart,
+				},
+				"Start new transaction",
+			),
+		),
+		/*#__PURE__*/ React__default["default"].createElement(
+			Box$5,
+			{
+				as: "dl",
+				className: "border-2 py-1 px-2",
+				styled: {
+					borderColor: "#3bee81",
+				},
+			},
+			/*#__PURE__*/ React__default["default"].createElement("dt", null, "You send"),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"dd",
+				{
+					className: "text-2xl font-bold uppercase",
+				},
+				amount,
+				" ",
+				transaction.fromCurrency,
+			),
+			/*#__PURE__*/ React__default["default"].createElement("dt", null, "To address"),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"dd",
+				{
+					className: "flex items-center space-x-3 text-2xl font-bold",
+				},
+				transaction.payinAddress,
+				/*#__PURE__*/ React__default["default"].createElement(
+					Clipboard,
+					{
+						data: transaction.payinAddress,
+					},
+					/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
+						className: "w-5 h-5 text-theme-secondary-text ml-2",
+					}),
+				),
+			),
+			transaction.payinExtraId
+				? /*#__PURE__*/ React__default["default"].createElement(
+						React__default["default"].Fragment,
+						null,
+						/*#__PURE__*/ React__default["default"].createElement("dt", null, transaction.payinExtraIdName),
+						/*#__PURE__*/ React__default["default"].createElement(
+							"dd",
+							{
+								className: "flex items-center space-x-3 text-2xl font-bold",
+							},
+							transaction.payinExtraId,
+							/*#__PURE__*/ React__default["default"].createElement(
+								Clipboard,
+								{
+									data: transaction.payinExtraId,
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
+									className: "w-5 h-5 text-theme-secondary-text ml-2",
+								}),
+							),
+						),
+				  )
+				: null,
+		),
+		/*#__PURE__*/ React__default["default"].createElement(
+			"div",
+			null,
+			/*#__PURE__*/ React__default["default"].createElement("p", null, "You get"),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"span",
+				{
+					className: "uppercase",
+				},
+				"\u2248 ",
+				transaction.amount,
+				" ",
+				transaction.toCurrency,
+			),
+		),
+		/*#__PURE__*/ React__default["default"].createElement(
+			"div",
+			null,
+			/*#__PURE__*/ React__default["default"].createElement("p", null, "To address"),
+			/*#__PURE__*/ React__default["default"].createElement("span", null, transaction.payoutAddress),
+		),
+		transaction.payoutExtraId
+			? /*#__PURE__*/ React__default["default"].createElement(
+					"div",
+					null,
+					/*#__PURE__*/ React__default["default"].createElement("p", null, transaction.payoutExtraIdName),
+					/*#__PURE__*/ React__default["default"].createElement("span", null, transaction.payoutExtraId),
+			  )
+			: null,
+		/*#__PURE__*/ React__default["default"].createElement(
+			"ul",
+			{
+				className: "flex space-x-2",
+			},
+			/*#__PURE__*/ React__default["default"].createElement(
+				"li",
+				{
+					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
+				},
+				isDepositConfirmed
+					? /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$5,
+								{
+									as: "span",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CheckCircleIcon, {
+									className: "w-6 h-6",
+								}),
+							),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Deposit received"),
+					  )
+					: /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(Spinner$2, {
+								size: "sm",
+							}),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Awaiting deposit"),
+					  ),
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"li",
+				{
+					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
+				},
+				isSending
+					? /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$5,
+								{
+									as: "span",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CheckCircleIcon, {
+									className: "w-6 h-6",
+								}),
+							),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Exchanged"),
+					  )
+					: /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							isDepositConfirmed
+								? /*#__PURE__*/ React__default["default"].createElement(Spinner$2, {
+										size: "sm",
+								  })
+								: null,
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Exchanging"),
+					  ),
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"li",
+				{
+					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
+				},
+				isExchangeFinishedSuccess
+					? /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$5,
+								{
+									as: "span",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CheckCircleIcon, {
+									className: "w-6 h-6",
+								}),
+							),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Sent to your wallet"),
+					  )
+					: /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							isSending
+								? /*#__PURE__*/ React__default["default"].createElement(Spinner$2, {
+										size: "sm",
+								  })
+								: null,
+							/*#__PURE__*/ React__default["default"].createElement(
+								"span",
+								null,
+								"Sending to your wallet",
+							),
+					  ),
+			),
+		),
+		/*#__PURE__*/ React__default["default"].createElement(
+			"div",
+			{
+				className: "p-1 bg-theme-secondary-200 text-sm",
+			},
+			/*#__PURE__*/ React__default["default"].createElement(
+				"p",
+				null,
+				"If you have any questions about your exchange, please contact our support team via email.",
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				Box$5,
+				{
+					as: "a",
+					href: "mailto: support@changenow.io",
+					styled: {
+						color: "#3bee81",
+					},
+				},
+				"support@changenow.io",
+			),
+		),
+	);
+};
+
+const { Box: Box$6, Clipboard: Clipboard$1 } = globalThis.ark.Components;
+const SuccessStep = ({ state, dispatch }) => {
+	const walletContext = useWalletContext();
+	const { transaction, from, to } = state;
+	const payinHashLink = from.transactionExplorerMask
+		? from.transactionExplorerMask.replace("$$", transaction.payinHash)
+		: "";
+	const payinAddressLink = from.addressExplorerMask
+		? from.addressExplorerMask.replace("$$", transaction.payinAddress)
+		: "";
+	const payoutHashLink = to.transactionExplorerMask
+		? from.transactionExplorerMask.replace("$$", transaction.payoutHash)
+		: "";
+	const payoutAddressLink = to.addressExplorerMask
+		? from.addressExplorerMask.replace("$$", transaction.payoutAddress)
+		: "";
+
+	const parseDate = (date) => {
+		return new Date(date).toLocaleString();
+	};
+
+	const onRestart = () => {
+		walletContext.store().data().forget("state");
+		walletContext.store().persist();
+		dispatch({
+			type: "restart",
+		});
+	};
+
+	return /*#__PURE__*/ React__default["default"].createElement(
+		"div",
+		{
+			className: "w-full max-w-4xl p-2 flex flex-col space-y-3",
+		},
+		/*#__PURE__*/ React__default["default"].createElement(
+			"div",
+			{
+				className: "relative flex flex-col items-center justify-center bg-theme-secondary-200 p-2 rounded",
+			},
+			/*#__PURE__*/ React__default["default"].createElement(
+				Box$6,
+				{
+					as: "button",
+					type: "button",
+					className: "absolute right-2 top-2",
+					styled: {
+						color: "#3bee81",
+					},
+					onClick: onRestart,
+				},
+				"Start new transaction",
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				Box$6,
+				{
+					as: "span",
+					styled: {
+						color: "#3bee81",
+					},
+				},
+				/*#__PURE__*/ React__default["default"].createElement(CheckCircleIcon, {
+					className: "w-16 h-16",
+				}),
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"p",
+				{
+					className: "font-bold text-2xl mt-3 text-theme-secondary-800",
+				},
+				"Transaction is completed!",
+			),
+		),
+		/*#__PURE__*/ React__default["default"].createElement(
+			"div",
+			{
+				className: "shadow-md p-4 flex flex-col space-y-4",
+			},
+			/*#__PURE__*/ React__default["default"].createElement(
+				"div",
+				{
+					className: "flex items-center space-x-3",
+				},
+				/*#__PURE__*/ React__default["default"].createElement(
+					Box$6,
+					{
+						className:
+							"w-10 h-10 rounded-full text-white font-bold text-xl flex items-center justify-center",
+						styled: {
+							backgroundColor: "#3bee81",
+						},
+					},
+					"1",
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"p",
+					{
+						className: "text-xl font-bold",
+					},
+					"Your ",
+					/*#__PURE__*/ React__default["default"].createElement(
+						"span",
+						{
+							className: "uppercase",
+						},
+						transaction.fromCurrency,
+					),
+					" Wallet",
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"span",
+					{
+						className: "text-theme-secondary-text",
+					},
+					parseDate(transaction.depositReceivedAt),
+				),
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"div",
+				{
+					className: "flex items-center space-x-7",
+				},
+				/*#__PURE__*/ React__default["default"].createElement(
+					"div",
+					{
+						className: "bg-theme-secondary-200 w-24 h-24 rounded-full flex items-center justify-center p-5",
+					},
+					/*#__PURE__*/ React__default["default"].createElement("img", {
+						src: "https://changenow.io/images/exchange/wallet-icon.svg",
+					}),
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"div",
+					{
+						className: "flex-1 flex flex-col space-y-2",
+					},
+					/*#__PURE__*/ React__default["default"].createElement(
+						"div",
+						{
+							className: "flex items-center",
+						},
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "w-64",
+							},
+							"Input Transaction Hash",
+						),
+						/*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex-1 flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$6,
+								{
+									as: "a",
+									target: "_blank",
+									href: payinHashLink,
+									className: "text-sm font-medium",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								transaction.payinHash,
+							),
+							/*#__PURE__*/ React__default["default"].createElement(
+								Clipboard$1,
+								{
+									data: transaction.payinHash,
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
+									className: "w-5 h-5 text-theme-secondary-text ml-2",
+								}),
+							),
+						),
+					),
+					/*#__PURE__*/ React__default["default"].createElement(
+						"div",
+						{
+							className: "flex items-center",
+						},
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "w-64",
+							},
+							"ChangeNOW Address",
+						),
+						/*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex-1 flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$6,
+								{
+									as: "a",
+									target: "_blank",
+									href: payinAddressLink,
+									className: "text-sm font-medium",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								transaction.payinAddress,
+							),
+							/*#__PURE__*/ React__default["default"].createElement(
+								Clipboard$1,
+								{
+									data: transaction.payinAddress,
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
+									className: "w-5 h-5 text-theme-secondary-text ml-2",
+								}),
+							),
+						),
+					),
+					/*#__PURE__*/ React__default["default"].createElement(
+						"div",
+						{
+							className: "flex items-center",
+						},
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "w-64 font-bold",
+							},
+							"Amount Sent",
+						),
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "flex-1 font-bold",
+							},
+							transaction.amountSend,
+							" ",
+							transaction.fromCurrency?.toUpperCase(),
+						),
+					),
+				),
+			),
+		),
+		/*#__PURE__*/ React__default["default"].createElement(
+			"div",
+			{
+				className: "shadow-md p-4 flex flex-col space-y-4",
+			},
+			/*#__PURE__*/ React__default["default"].createElement(
+				"div",
+				{
+					className: "flex items-center space-x-3",
+				},
+				/*#__PURE__*/ React__default["default"].createElement(
+					Box$6,
+					{
+						className:
+							"w-10 h-10 rounded-full text-white font-bold text-xl flex items-center justify-center",
+						styled: {
+							backgroundColor: "#3bee81",
+						},
+					},
+					"2",
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"p",
+					{
+						className: "text-xl font-bold",
+					},
+					"Your ",
+					/*#__PURE__*/ React__default["default"].createElement(
+						"span",
+						{
+							className: "uppercase",
+						},
+						transaction.toCurrency,
+					),
+					" Wallet",
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"span",
+					{
+						className: "text-theme-secondary-text",
+					},
+					parseDate(transaction.updatedAt),
+				),
+			),
+			/*#__PURE__*/ React__default["default"].createElement(
+				"div",
+				{
+					className: "flex items-center space-x-7",
+				},
+				/*#__PURE__*/ React__default["default"].createElement(
+					"div",
+					{
+						className: "bg-theme-secondary-200 w-24 h-24 rounded-full flex items-center justify-center p-5",
+					},
+					/*#__PURE__*/ React__default["default"].createElement("img", {
+						src: "https://changenow.io/images/exchange/exchange-icon.svg",
+					}),
+				),
+				/*#__PURE__*/ React__default["default"].createElement(
+					"div",
+					{
+						className: "flex-1 flex flex-col space-y-2",
+					},
+					/*#__PURE__*/ React__default["default"].createElement(
+						"div",
+						{
+							className: "flex items-center",
+						},
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "w-64",
+							},
+							"Output Transaction Hash",
+						),
+						/*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex-1 flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$6,
+								{
+									as: "a",
+									target: "_blank",
+									href: payoutHashLink,
+									className: "text-sm font-medium",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								transaction.payoutHash,
+							),
+							/*#__PURE__*/ React__default["default"].createElement(
+								Clipboard$1,
+								{
+									data: transaction.payoutHash,
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
+									className: "w-5 h-5 text-theme-secondary-text ml-2",
+								}),
+							),
+						),
+					),
+					/*#__PURE__*/ React__default["default"].createElement(
+						"div",
+						{
+							className: "flex items-center",
+						},
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "w-64",
+							},
+							"Your ",
+							transaction.toCurrency?.toUpperCase(),
+							" Address",
+						),
+						/*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex-1 flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$6,
+								{
+									as: "a",
+									target: "_blank",
+									href: payoutAddressLink,
+									className: "text-sm font-medium",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								transaction.payoutAddress,
+							),
+							/*#__PURE__*/ React__default["default"].createElement(
+								Clipboard$1,
+								{
+									data: transaction.payoutAddress,
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
+									className: "w-5 h-5 text-theme-secondary-text ml-2",
+								}),
+							),
+						),
+					),
+					/*#__PURE__*/ React__default["default"].createElement(
+						"div",
+						{
+							className: "flex items-center",
+						},
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "w-64 font-bold",
+							},
+							"Amount Received",
+						),
+						/*#__PURE__*/ React__default["default"].createElement(
+							"p",
+							{
+								className: "flex-1 font-bold",
+							},
+							transaction.amountReceive,
+							" ",
+							transaction.toCurrency?.toUpperCase(),
+						),
+					),
+				),
+			),
+		),
+	);
+};
+
 const { Components: Components$5 } = globalThis.ark;
 const ImageWorld = () => {
 	return /*#__PURE__*/ React__default["default"].createElement(Components$5.Box, {
@@ -1927,10 +2738,10 @@ const ImageWorld = () => {
 };
 
 const { Components: Components$6 } = globalThis.ark;
-const { Box: Box$5, Spinner: Spinner$2 } = Components$6;
+const { Box: Box$7, Spinner: Spinner$3 } = Components$6;
 const MainLayout = ({ children, isLoading }) => {
 	return /*#__PURE__*/ React__default["default"].createElement(
-		Box$5,
+		Box$7,
 		{
 			as: "section",
 			className: "flex-1 flex flex-col relative h-full",
@@ -1983,7 +2794,7 @@ const MainLayout = ({ children, isLoading }) => {
 					),
 				),
 			),
-			/*#__PURE__*/ React__default["default"].createElement(Box$5, {
+			/*#__PURE__*/ React__default["default"].createElement(Box$7, {
 				className: "sm:block hidden",
 				styled: {
 					width: "1px",
@@ -1992,7 +2803,7 @@ const MainLayout = ({ children, isLoading }) => {
 				},
 			}),
 			/*#__PURE__*/ React__default["default"].createElement(
-				Box$5,
+				Box$7,
 				{
 					className: "sm:block hidden ml-4 text-theme-secondary-text",
 				},
@@ -2000,7 +2811,7 @@ const MainLayout = ({ children, isLoading }) => {
 			),
 		),
 		/*#__PURE__*/ React__default["default"].createElement(
-			Box$5,
+			Box$7,
 			{
 				className: "flex-1 flex items-center justify-center px-3 z-5",
 				styled: {
@@ -2020,7 +2831,7 @@ const MainLayout = ({ children, isLoading }) => {
 							{
 								className: "mx-auto",
 							},
-							/*#__PURE__*/ React__default["default"].createElement(Spinner$2, {
+							/*#__PURE__*/ React__default["default"].createElement(Spinner$3, {
 								size: "lg",
 							}),
 					  )
@@ -2033,7 +2844,7 @@ const MainLayout = ({ children, isLoading }) => {
 									className: "w-3/5",
 								},
 								/*#__PURE__*/ React__default["default"].createElement(
-									Box$5,
+									Box$7,
 									{
 										as: "h1",
 										className: "text-5xl font-bold",
@@ -2044,7 +2855,7 @@ const MainLayout = ({ children, isLoading }) => {
 									"Limitless exchange",
 								),
 								/*#__PURE__*/ React__default["default"].createElement(
-									Box$5,
+									Box$7,
 									{
 										as: "p",
 										className: "mb-8 text-2xl",
@@ -2060,7 +2871,7 @@ const MainLayout = ({ children, isLoading }) => {
 										className: "mb-4 inline-block capitalize relative",
 									},
 									/*#__PURE__*/ React__default["default"].createElement(
-										Box$5,
+										Box$7,
 										{
 											as: "p",
 											className: "text-lg font-bold",
@@ -2070,13 +2881,13 @@ const MainLayout = ({ children, isLoading }) => {
 										},
 										"What you see is what you get",
 									),
-									/*#__PURE__*/ React__default["default"].createElement(Box$5, {
+									/*#__PURE__*/ React__default["default"].createElement(Box$7, {
 										as: "img",
 										className: "absolute w-4 transform -translate-y-12 translate-x-5 right-0",
 										src:
 											"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAWCAYAAADafVyIAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGPSURBVHgBrVRLUsJAEO2ecaMrPIHhBMraKgk7YJPcADmBeALxBMAN9AasxF1Ey703MJ7ArLCkTNpOTCzzmWTG4q0y/Zvp168DYADy+hY9D49McoRJMEh04QvGJil7JsGAYgQQBUYpuoExPSDFa3KQYOHp3ZtOnj5FMT0ZDGgymYHz+4XU1U3SoihHT4Zwc4i9h8Z56HUghV227Z+DBpA8uwXyYMbvtNRh4oT9rYLRZ5tfU9rnLi8TihIKBE4BcQS7wZKLj2MKczOgx8GEb57Bf0EQMCfXeLaaZ6bSkNNuPO7GAhMQ0xVRD3v3/l+zUkW0Hs7ZewF6xRcQfUyrVFUrU1oPbhrnwsWxu5qo3PUyRWj+cyIc17sVIM9l+W7foRkBK6atWjp1B3Lrlm/lQVJJ+/EeuaoydRQ5hfOSB9mJlcKX3BZuVs6pkqIcPRXaTszJzoirdMOVNFV3ID/ttPgLRFGnWDx5WWwLw05KmZImBUXo/Gh7U1qcXBT7WKJtfsiCj9q/cKCnvg2GYMoqO/gGeuWYpiw2NTYAAAAASUVORK5CYII=",
 									}),
-									/*#__PURE__*/ React__default["default"].createElement(Box$5, {
+									/*#__PURE__*/ React__default["default"].createElement(Box$7, {
 										as: "img",
 										className: "absolute w-2 transform top-0 translate-x-8 right-0",
 										src:
@@ -2118,7 +2929,7 @@ const MainLayout = ({ children, isLoading }) => {
 			),
 		),
 		/*#__PURE__*/ React__default["default"].createElement(
-			Box$5,
+			Box$7,
 			{
 				as: "footer",
 				className: "py-6 w-100 text-center text-xl text-white capitalize font-bold",
@@ -2232,15 +3043,15 @@ const swapReducer = (state, action) => {
 		}
 
 		case "status": {
-			return { ...state, transaction: { ...state.transaction, status: action.status } };
+			return { ...state, transaction: { ...state.transaction, ...action.payload } };
 		}
 
 		case "activeTab": {
 			return { ...state, activeTab: action.activeTab };
 		}
 
-		case "isAnonymous": {
-			return { ...state, [action.mode]: { ...state[action.mode], isAnonymous: action.isAnonymous } };
+		case "additionalCurrencyInfo": {
+			return { ...state, [action.mode]: { ...state[action.mode], ...action.payload } };
 		}
 	}
 };
@@ -2252,394 +3063,6 @@ const defaultState = {
 	activeTab: 1,
 };
 const useBuilder = () => React__default["default"].useReducer(swapReducer, defaultState);
-
-const CopyIcon = (props) => {
-	return /*#__PURE__*/ React__default["default"].createElement(
-		"svg",
-		_extends(
-			{
-				xmlns: "http://www.w3.org/2000/svg",
-				fill: "none",
-				viewBox: "0 0 24 24",
-				stroke: "currentColor",
-			},
-			props,
-		),
-		/*#__PURE__*/ React__default["default"].createElement("path", {
-			strokeLinecap: "round",
-			strokeLinejoin: "round",
-			strokeWidth: 2,
-			d:
-				"M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z",
-		}),
-	);
-};
-
-const statuses = {
-	waiting: "waiting",
-	confirming: "confirming",
-	exchanging: "exchanging",
-	sending: "sending",
-	finished: "finished",
-	failed: "failed",
-	refunded: "refunded",
-	expired: "expired",
-};
-const finishedStatuses = ["finished", "failed", "refunded", "expired"];
-
-const CheckIcon = (props) => {
-	return /*#__PURE__*/ React__default["default"].createElement(
-		"svg",
-		_extends(
-			{
-				xmlns: "http://www.w3.org/2000/svg",
-				fill: "none",
-				viewBox: "0 0 24 24",
-				stroke: "currentColor",
-			},
-			props,
-		),
-		/*#__PURE__*/ React__default["default"].createElement("path", {
-			strokeLinecap: "round",
-			strokeLinejoin: "round",
-			strokeWidth: 2,
-			d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-		}),
-	);
-};
-
-const { Box: Box$6, Spinner: Spinner$3, Clipboard } = globalThis.ark.Components;
-const TransactionStep = ({ state, dispatch }) => {
-	const { amount, transaction } = state;
-	const { getTransactionStatus } = useExchange();
-	const walletContext = useWalletContext();
-	const timerRef = React__default["default"].useRef();
-	const isDepositConfirmed = transaction.status === statuses.exchanging || transaction.status === statuses.sending;
-	const isSending = transaction.status === statuses.sending;
-	const isExchangeFinished = React__default["default"].useMemo(() => finishedStatuses.includes(transaction.status), [
-		transaction.status,
-	]);
-	const isExchangeFinishedSuccess = transaction.status === statuses.finished;
-	const transactionId = transaction.id;
-	const verifyTransactionStatus = React__default["default"].useCallback(async () => {
-		try {
-			const response = await getTransactionStatus(transactionId);
-			dispatch({
-				type: "status",
-				status: response.status,
-			});
-		} catch (error) {
-			console.error(error);
-		}
-	}, [transactionId]);
-
-	const onRestart = () => {
-		walletContext.store().data().forget("state");
-		walletContext.store().persist();
-		dispatch({
-			type: "restart",
-		});
-	};
-
-	React__default["default"].useEffect(() => {
-		if (isExchangeFinished && timerRef.current) {
-			clearInterval(timerRef.current);
-		}
-	}, [isExchangeFinished]);
-	React__default["default"].useEffect(() => {
-		const timer = walletContext.timers().setInterval(() => verifyTransactionStatus(), 10000);
-		timerRef.current = timer;
-		return () => {
-			walletContext.timers().clearInterval(timerRef.current);
-		};
-	}, [verifyTransactionStatus]);
-	return /*#__PURE__*/ React__default["default"].createElement(
-		"div",
-		{
-			className: "inline-flex flex-col space-y-4 w-full",
-		},
-		/*#__PURE__*/ React__default["default"].createElement(
-			"div",
-			{
-				className: "flex items-center justify-between",
-			},
-			/*#__PURE__*/ React__default["default"].createElement(
-				"div",
-				{
-					className: "flex items-center space-x-3 font-semibold",
-				},
-				/*#__PURE__*/ React__default["default"].createElement(
-					"span",
-					{
-						className:
-							"rounded-full border-2 border-theme-success-500 flex items-center justify-center w-8 h-8",
-					},
-					"3",
-				),
-				/*#__PURE__*/ React__default["default"].createElement(
-					"span",
-					{
-						className: "text-theme-secondary-700",
-					},
-					"Sending",
-				),
-				/*#__PURE__*/ React__default["default"].createElement(
-					"span",
-					{
-						className: "text-theme-secondary-500 font-medium",
-					},
-					"Transaction Id: ",
-					transaction.id,
-				),
-			),
-			/*#__PURE__*/ React__default["default"].createElement(
-				Box$6,
-				{
-					as: "button",
-					type: "button",
-					styled: {
-						color: "#3bee81",
-					},
-					onClick: onRestart,
-				},
-				"Start new transaction",
-			),
-		),
-		/*#__PURE__*/ React__default["default"].createElement(
-			Box$6,
-			{
-				as: "dl",
-				className: "border-2 py-1 px-2",
-				styled: {
-					borderColor: "#3bee81",
-				},
-			},
-			/*#__PURE__*/ React__default["default"].createElement("dt", null, "You send"),
-			/*#__PURE__*/ React__default["default"].createElement(
-				"dd",
-				{
-					className: "text-2xl font-bold uppercase",
-				},
-				amount,
-				" ",
-				transaction.fromCurrency,
-			),
-			/*#__PURE__*/ React__default["default"].createElement("dt", null, "To address"),
-			/*#__PURE__*/ React__default["default"].createElement(
-				"dd",
-				{
-					className: "flex items-center space-x-3 text-2xl font-bold",
-				},
-				transaction.payinAddress,
-				/*#__PURE__*/ React__default["default"].createElement(
-					Clipboard,
-					{
-						data: transaction.payinAddress,
-					},
-					/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
-						className: "w-5 h-5 text-theme-secondary-text ml-2",
-					}),
-				),
-			),
-			transaction.payinExtraId
-				? /*#__PURE__*/ React__default["default"].createElement(
-						React__default["default"].Fragment,
-						null,
-						/*#__PURE__*/ React__default["default"].createElement("dt", null, transaction.payinExtraIdName),
-						/*#__PURE__*/ React__default["default"].createElement(
-							"dd",
-							{
-								className: "flex items-center space-x-3 text-2xl font-bold",
-							},
-							transaction.payinExtraId,
-							/*#__PURE__*/ React__default["default"].createElement(
-								Clipboard,
-								{
-									data: transaction.payinExtraId,
-								},
-								/*#__PURE__*/ React__default["default"].createElement(CopyIcon, {
-									className: "w-5 h-5 text-theme-secondary-text ml-2",
-								}),
-							),
-						),
-				  )
-				: null,
-		),
-		/*#__PURE__*/ React__default["default"].createElement(
-			"div",
-			null,
-			/*#__PURE__*/ React__default["default"].createElement("p", null, "You get"),
-			/*#__PURE__*/ React__default["default"].createElement(
-				"span",
-				{
-					className: "uppercase",
-				},
-				"\u2248 ",
-				transaction.amount,
-				" ",
-				transaction.toCurrency,
-			),
-		),
-		/*#__PURE__*/ React__default["default"].createElement(
-			"div",
-			null,
-			/*#__PURE__*/ React__default["default"].createElement("p", null, "To address"),
-			/*#__PURE__*/ React__default["default"].createElement("span", null, transaction.payoutAddress),
-		),
-		transaction.payoutExtraId
-			? /*#__PURE__*/ React__default["default"].createElement(
-					"div",
-					null,
-					/*#__PURE__*/ React__default["default"].createElement("p", null, transaction.payoutExtraIdName),
-					/*#__PURE__*/ React__default["default"].createElement("span", null, transaction.payoutExtraId),
-			  )
-			: null,
-		/*#__PURE__*/ React__default["default"].createElement(
-			"ul",
-			{
-				className: "flex space-x-2",
-			},
-			/*#__PURE__*/ React__default["default"].createElement(
-				"li",
-				{
-					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
-				},
-				isDepositConfirmed
-					? /*#__PURE__*/ React__default["default"].createElement(
-							"div",
-							{
-								className: "flex items-center space-x-2",
-							},
-							/*#__PURE__*/ React__default["default"].createElement(
-								Box$6,
-								{
-									as: "span",
-									styled: {
-										color: "#3bee81",
-									},
-								},
-								/*#__PURE__*/ React__default["default"].createElement(CheckIcon, {
-									className: "w-6 h-6",
-								}),
-							),
-							/*#__PURE__*/ React__default["default"].createElement("span", null, "Deposit received"),
-					  )
-					: /*#__PURE__*/ React__default["default"].createElement(
-							"div",
-							{
-								className: "flex items-center space-x-2",
-							},
-							/*#__PURE__*/ React__default["default"].createElement(Spinner$3, {
-								size: "sm",
-							}),
-							/*#__PURE__*/ React__default["default"].createElement("span", null, "Awaiting deposit"),
-					  ),
-			),
-			/*#__PURE__*/ React__default["default"].createElement(
-				"li",
-				{
-					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
-				},
-				isSending
-					? /*#__PURE__*/ React__default["default"].createElement(
-							"div",
-							{
-								className: "flex items-center space-x-2",
-							},
-							/*#__PURE__*/ React__default["default"].createElement(
-								Box$6,
-								{
-									as: "span",
-									styled: {
-										color: "#3bee81",
-									},
-								},
-								/*#__PURE__*/ React__default["default"].createElement(CheckIcon, {
-									className: "w-6 h-6",
-								}),
-							),
-							/*#__PURE__*/ React__default["default"].createElement("span", null, "Exchanged"),
-					  )
-					: /*#__PURE__*/ React__default["default"].createElement(
-							"div",
-							{
-								className: "flex items-center space-x-2",
-							},
-							isDepositConfirmed
-								? /*#__PURE__*/ React__default["default"].createElement(Spinner$3, {
-										size: "sm",
-								  })
-								: null,
-							/*#__PURE__*/ React__default["default"].createElement("span", null, "Exchanging"),
-					  ),
-			),
-			/*#__PURE__*/ React__default["default"].createElement(
-				"li",
-				{
-					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
-				},
-				isExchangeFinishedSuccess
-					? /*#__PURE__*/ React__default["default"].createElement(
-							"div",
-							{
-								className: "flex items-center space-x-2",
-							},
-							/*#__PURE__*/ React__default["default"].createElement(
-								Box$6,
-								{
-									as: "span",
-									styled: {
-										color: "#3bee81",
-									},
-								},
-								/*#__PURE__*/ React__default["default"].createElement(CheckIcon, {
-									className: "w-6 h-6",
-								}),
-							),
-							/*#__PURE__*/ React__default["default"].createElement("span", null, "Sent to your wallet"),
-					  )
-					: /*#__PURE__*/ React__default["default"].createElement(
-							"div",
-							{
-								className: "flex items-center space-x-2",
-							},
-							isSending
-								? /*#__PURE__*/ React__default["default"].createElement(Spinner$3, {
-										size: "sm",
-								  })
-								: null,
-							/*#__PURE__*/ React__default["default"].createElement(
-								"span",
-								null,
-								"Sending to your wallet",
-							),
-					  ),
-			),
-		),
-		/*#__PURE__*/ React__default["default"].createElement(
-			"div",
-			{
-				className: "p-1 bg-theme-secondary-200 text-sm",
-			},
-			/*#__PURE__*/ React__default["default"].createElement(
-				"p",
-				null,
-				"If you have any questions about your exchange, please contact our support team via email.",
-			),
-			/*#__PURE__*/ React__default["default"].createElement(
-				Box$6,
-				{
-					as: "a",
-					href: "mailto: support@changenow.io",
-					styled: {
-						color: "#3bee81",
-					},
-				},
-				"support@changenow.io",
-			),
-		),
-	);
-};
 
 const { Components: Components$7 } = globalThis.ark;
 const { Tabs, TabPanel } = Components$7;
@@ -2764,6 +3187,17 @@ const MainPage = () => {
 					onBack: goBack,
 				}),
 			),
+		),
+		/*#__PURE__*/ React__default["default"].createElement(
+			TabPanel,
+			{
+				tabId: 5,
+				className: "flex-1 flex items-center justify-center",
+			},
+			/*#__PURE__*/ React__default["default"].createElement(SuccessStep, {
+				state: state,
+				dispatch: dispatch,
+			}),
 		),
 	);
 };

@@ -95,7 +95,7 @@ const swapReducer = (state, action) => {
 				...state,
 				transaction: {
 					...state.transaction,
-					status: action.status,
+					...action.payload,
 				},
 			};
 		}
@@ -105,12 +105,12 @@ const swapReducer = (state, action) => {
 				activeTab: action.activeTab,
 			};
 		}
-		case "isAnonymous": {
+		case "additionalCurrencyInfo": {
 			return {
 				...state,
 				[action.mode]: {
 					...state[action.mode],
-					isAnonymous: action.isAnonymous,
+					...action.payload,
 				},
 			};
 		}

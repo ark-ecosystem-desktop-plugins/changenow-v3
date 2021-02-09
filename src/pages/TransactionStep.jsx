@@ -3,7 +3,7 @@ import { CopyIcon } from "../icons/CopyIcon";
 import { useExchange } from "../hooks/use-exchange";
 import { useWalletContext } from "../context/WalletProvider";
 import { statuses, finishedStatuses } from "../contants";
-import { CheckIcon } from "../icons/CheckIcon";
+import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 
 const { Box, Spinner, Clipboard } = globalThis.ark.Components;
 
@@ -23,7 +23,7 @@ export const TransactionStep = ({ state, dispatch }) => {
 	const verifyTransactionStatus = React.useCallback(async () => {
 		try {
 			const response = await getTransactionStatus(transactionId);
-			dispatch({ type: "status", status: response.status });
+			dispatch({ type: "status", payload: { status: response.status } });
 		} catch (error) {
 			console.error(error);
 		}
@@ -116,7 +116,7 @@ export const TransactionStep = ({ state, dispatch }) => {
 					{isDepositConfirmed ? (
 						<div className="flex items-center space-x-2">
 							<Box as="span" styled={{ color: "#3bee81" }}>
-								<CheckIcon className="w-6 h-6" />
+								<CheckCircleIcon className="w-6 h-6" />
 							</Box>
 							<span>Deposit received</span>
 						</div>
@@ -131,7 +131,7 @@ export const TransactionStep = ({ state, dispatch }) => {
 					{isSending ? (
 						<div className="flex items-center space-x-2">
 							<Box as="span" styled={{ color: "#3bee81" }}>
-								<CheckIcon className="w-6 h-6" />
+								<CheckCircleIcon className="w-6 h-6" />
 							</Box>
 							<span>Exchanged</span>
 						</div>
@@ -146,7 +146,7 @@ export const TransactionStep = ({ state, dispatch }) => {
 					{isExchangeFinishedSuccess ? (
 						<div className="flex items-center space-x-2">
 							<Box as="span" styled={{ color: "#3bee81" }}>
-								<CheckIcon className="w-6 h-6" />
+								<CheckCircleIcon className="w-6 h-6" />
 							</Box>
 							<span>Sent to your wallet</span>
 						</div>

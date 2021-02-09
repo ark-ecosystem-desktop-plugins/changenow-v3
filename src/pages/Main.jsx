@@ -3,13 +3,14 @@ import React from "react";
 import { FormStep } from "./FormStep";
 import { RecipientStep } from "./RecipientStep";
 import { ReviewStep } from "./ReviewStep";
+import { TransactionStep } from "./TransactionStep";
+import { SuccessStep } from "./SuccessStep";
 
 import { MainLayout } from "../layouts/MainLayout";
 import { StepLayout } from "../layouts/StepLayout";
 
 import { useExchange } from "../hooks/use-exchange";
 import { useBuilder } from "../hooks/use-builder";
-import { TransactionStep } from "./TransactionStep";
 import { useWalletContext } from "../context/WalletProvider";
 
 const { Components } = globalThis.ark;
@@ -76,6 +77,10 @@ export const MainPage = () => {
 				<StepLayout>
 					<TransactionStep state={state} dispatch={dispatch} onBack={goBack} />
 				</StepLayout>
+			</TabPanel>
+
+			<TabPanel tabId={5} className="flex-1 flex items-center justify-center">
+				<SuccessStep state={state} dispatch={dispatch} />
 			</TabPanel>
 		</Tabs>
 	);

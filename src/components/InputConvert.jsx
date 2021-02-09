@@ -88,7 +88,15 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 
 	const fetchCurrencyInfo = async (mode, ticker) => {
 		const result = await getCurrencyInfo(ticker);
-		dispatch({ type: "isAnonymous", isAnonymous: result.isAnonymous, mode });
+		dispatch({
+			type: "additionalCurrencyInfo",
+			payload: {
+				isAnonymous: result.isAnonymous,
+				transactionExplorerMask: result.transactionExplorerMask,
+				addressExplorerMask: result.addressExplorerMask,
+			},
+			mode,
+		});
 	};
 
 	React.useEffect(() => {
