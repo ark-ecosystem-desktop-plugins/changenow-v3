@@ -66,14 +66,17 @@ const SearchIcon = (props) => {
 const { Components } = globalThis.ark;
 const { Box } = Components;
 const Listbox = ({ isOpen, options, search, onSearch, onSelect }) => {
+	const inputRef = React.useRef();
+	React.useEffect(() => {
+		if (isOpen) {
+			inputRef.current.focus();
+		}
+	}, [isOpen, inputRef]);
+
 	if (!isOpen) {
 		return null;
 	}
 
-	const inputRef = React.useRef();
-	React.useEffect(() => {
-		inputRef.current.focus();
-	}, []);
 	return /*#__PURE__*/ React__default["default"].createElement(
 		"div",
 		{
@@ -374,7 +377,12 @@ const InputConvert = ({ state, dispatch, isTransparent }) => {
 	}, [convertAmount]);
 	return /*#__PURE__*/ React__default["default"].createElement(
 		"div",
-		null,
+		{
+			onMouseDown: () => {
+				setIsFromFilterOpen(false);
+				setIsToFilterOpen(false);
+			},
+		},
 		isAmountTooLow
 			? /*#__PURE__*/ React__default["default"].createElement(
 					"p",

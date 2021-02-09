@@ -5,15 +5,17 @@ const { Components } = globalThis.ark;
 const { Box } = Components;
 
 export const Listbox = ({ isOpen, options, search, onSearch, onSelect }) => {
-	if (!isOpen) {
-		return null;
-	}
-
 	const inputRef = useRef();
 
 	useEffect(() => {
-		inputRef.current.focus();
-	}, []);
+		if (isOpen) {
+			inputRef.current.focus();
+		}
+	}, [isOpen, inputRef]);
+
+	if (!isOpen) {
+		return null;
+	}
 
 	return (
 		<div className="absolute right-1 top-16 shadow-lg z-50 bg-white rounded text-black w-64">

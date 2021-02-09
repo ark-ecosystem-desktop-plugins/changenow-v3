@@ -117,7 +117,12 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 	}, [convertAmount]);
 
 	return (
-		<div>
+		<div
+			onMouseDown={() => {
+				setIsFromFilterOpen(false);
+				setIsToFilterOpen(false);
+			}}
+		>
 			{isAmountTooLow ? (
 				<p className="text-theme-danger-400 text-sm mb-1">
 					Minimum amount{" "}
