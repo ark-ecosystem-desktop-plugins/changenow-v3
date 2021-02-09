@@ -26,6 +26,9 @@ export const MainPage = () => {
 		dispatch({ type: "currencies", currencies });
 	}, []);
 
+	const goNext = () => setActiveTab((current) => current + 1);
+	const goBack = () => setActiveTab((current) => current - 1);
+
 	React.useEffect(() => {
 		const initialize = async () => {
 			setIsLoading(true);
@@ -40,43 +43,25 @@ export const MainPage = () => {
 		<Tabs activeId={activeTab} className="flex-1 flex">
 			<TabPanel tabId={1} className="flex-1">
 				<MainLayout isLoading={isLoading}>
-					<FormStep
-						state={state}
-						dispatch={dispatch}
-						onSubmit={() => setActiveTab((current) => current + 1)}
-					/>
+					<FormStep state={state} dispatch={dispatch} onSubmit={goNext} />
 				</MainLayout>
 			</TabPanel>
 
 			<TabPanel tabId={2} className="flex-1 flex items-center justify-center">
 				<StepLayout>
-					<RecipientStep
-						state={state}
-						dispatch={dispatch}
-						onNext={() => setActiveTab((current) => current + 1)}
-						onBack={() => setActiveTab((current) => current - 1)}
-					/>
+					<RecipientStep state={state} dispatch={dispatch} onNext={goNext} onBack={goBack} />
 				</StepLayout>
 			</TabPanel>
 
 			<TabPanel tabId={3} className="flex-1 flex items-center justify-center">
 				<StepLayout>
-					<ReviewStep
-						state={state}
-						dispatch={dispatch}
-						onConfirm={() => setActiveTab((current) => current + 1)}
-						onBack={() => setActiveTab((current) => current - 1)}
-					/>
+					<ReviewStep state={state} dispatch={dispatch} onConfirm={goNext} onBack={goBack} />
 				</StepLayout>
 			</TabPanel>
 
 			<TabPanel tabId={4} className="flex-1 flex items-center justify-center">
 				<StepLayout>
-					<TransactionStep
-						state={state}
-						onConfirm={() => setActiveTab((current) => current - 2)}
-						onBack={() => setActiveTab((current) => current - 1)}
-					/>
+					<TransactionStep state={state} dispatch={dispatch} onBack={goBack} />
 				</StepLayout>
 			</TabPanel>
 		</Tabs>

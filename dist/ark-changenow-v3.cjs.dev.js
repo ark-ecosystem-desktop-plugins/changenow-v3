@@ -1403,9 +1403,75 @@ const CopyIcon = (props) => {
 	);
 };
 
-const { Box: Box$6 } = globalThis.ark.Components;
-const TransactionStep = ({ state, onRestart }) => {
+const statuses = {
+	waiting: "waiting",
+	confirming: "confirming",
+	exchanging: "exchanging",
+	sending: "sending",
+	finished: "finished",
+	failed: "failed",
+	refunded: "refunded",
+	expired: "expired",
+};
+const finishedStatuses = ["finished", "failed", "refunded", "expired"];
+
+const CheckIcon = (props) => {
+	return /*#__PURE__*/ React__default["default"].createElement(
+		"svg",
+		_extends(
+			{
+				xmlns: "http://www.w3.org/2000/svg",
+				fill: "none",
+				viewBox: "0 0 24 24",
+				stroke: "currentColor",
+			},
+			props,
+		),
+		/*#__PURE__*/ React__default["default"].createElement("path", {
+			strokeLinecap: "round",
+			strokeLinejoin: "round",
+			strokeWidth: 2,
+			d: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+		}),
+	);
+};
+
+const { Box: Box$6, Spinner: Spinner$3 } = globalThis.ark.Components;
+const TransactionStep = ({ state, dispatch, onRestart }) => {
 	const { amount, transaction } = state;
+	const { getTransactionStatus } = useExchange();
+	const walletContext = useWalletContext();
+	const timerRef = React__default["default"].useRef();
+	const isDepositConfirmed = transaction.status === statuses.exchanging || transaction.status === statuses.sending;
+	const isSending = transaction.status === statuses.sending;
+	const isExchangeFinished = React__default["default"].useMemo(() => finishedStatuses.includes(transaction.status), [
+		transaction.status,
+	]);
+	const isExchangeFinishedSuccess = transaction.status === statuses.finished;
+	const transactionId = transaction.id;
+	const verifyTransactionStatus = React__default["default"].useCallback(async () => {
+		try {
+			const response = await getTransactionStatus(transactionId);
+			dispatch({
+				type: "status",
+				status: response.status,
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}, [transactionId]);
+	React__default["default"].useEffect(() => {
+		if (isExchangeFinished && timerRef.current) {
+			clearInterval(timerRef.current);
+		}
+	}, [isExchangeFinished]);
+	React__default["default"].useEffect(() => {
+		const timer = walletContext.timers().setInterval(() => verifyTransactionStatus(), 10000);
+		timerRef.current = timer;
+		return () => {
+			walletContext.timers().clearInterval(timerRef.current);
+		};
+	}, [verifyTransactionStatus]);
 	return /*#__PURE__*/ React__default["default"].createElement(
 		"div",
 		{
@@ -1551,23 +1617,118 @@ const TransactionStep = ({ state, onRestart }) => {
 			/*#__PURE__*/ React__default["default"].createElement(
 				"li",
 				{
-					className: "flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1",
+					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
 				},
-				"Awaiting deposit",
+				isDepositConfirmed
+					? /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$6,
+								{
+									as: "span",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CheckIcon, {
+									className: "w-6 h-6",
+								}),
+							),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Deposit received"),
+					  )
+					: /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(Spinner$3, {
+								size: "sm",
+							}),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Awaiting deposit"),
+					  ),
 			),
 			/*#__PURE__*/ React__default["default"].createElement(
 				"li",
 				{
-					className: "flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1",
+					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
 				},
-				"Exchanging",
+				isSending
+					? /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$6,
+								{
+									as: "span",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CheckIcon, {
+									className: "w-6 h-6",
+								}),
+							),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Exchanged"),
+					  )
+					: /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							isDepositConfirmed
+								? /*#__PURE__*/ React__default["default"].createElement(Spinner$3, {
+										size: "sm",
+								  })
+								: null,
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Exchanging"),
+					  ),
 			),
 			/*#__PURE__*/ React__default["default"].createElement(
 				"li",
 				{
-					className: "flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1",
+					className: "flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1",
 				},
-				"Sending to your wallet",
+				isExchangeFinishedSuccess
+					? /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							/*#__PURE__*/ React__default["default"].createElement(
+								Box$6,
+								{
+									as: "span",
+									styled: {
+										color: "#3bee81",
+									},
+								},
+								/*#__PURE__*/ React__default["default"].createElement(CheckIcon, {
+									className: "w-6 h-6",
+								}),
+							),
+							/*#__PURE__*/ React__default["default"].createElement("span", null, "Sent to your wallet"),
+					  )
+					: /*#__PURE__*/ React__default["default"].createElement(
+							"div",
+							{
+								className: "flex items-center space-x-2",
+							},
+							isSending
+								? /*#__PURE__*/ React__default["default"].createElement(Spinner$3, {
+										size: "sm",
+								  })
+								: null,
+							/*#__PURE__*/ React__default["default"].createElement(
+								"span",
+								null,
+								"Sending to your wallet",
+							),
+					  ),
 			),
 		),
 		/*#__PURE__*/ React__default["default"].createElement(
@@ -1609,6 +1770,11 @@ const MainPage = () => {
 			currencies,
 		});
 	}, []);
+
+	const goNext = () => setActiveTab((current) => current + 1);
+
+	const goBack = () => setActiveTab((current) => current - 1);
+
 	React__default["default"].useEffect(() => {
 		const initialize = async () => {
 			setIsLoading(true);
@@ -1638,7 +1804,7 @@ const MainPage = () => {
 				/*#__PURE__*/ React__default["default"].createElement(FormStep, {
 					state: state,
 					dispatch: dispatch,
-					onSubmit: () => setActiveTab((current) => current + 1),
+					onSubmit: goNext,
 				}),
 			),
 		),
@@ -1654,8 +1820,8 @@ const MainPage = () => {
 				/*#__PURE__*/ React__default["default"].createElement(RecipientStep, {
 					state: state,
 					dispatch: dispatch,
-					onNext: () => setActiveTab((current) => current + 1),
-					onBack: () => setActiveTab((current) => current - 1),
+					onNext: goNext,
+					onBack: goBack,
 				}),
 			),
 		),
@@ -1671,8 +1837,8 @@ const MainPage = () => {
 				/*#__PURE__*/ React__default["default"].createElement(ReviewStep, {
 					state: state,
 					dispatch: dispatch,
-					onConfirm: () => setActiveTab((current) => current + 1),
-					onBack: () => setActiveTab((current) => current - 1),
+					onConfirm: goNext,
+					onBack: goBack,
 				}),
 			),
 		),
@@ -1687,8 +1853,8 @@ const MainPage = () => {
 				null,
 				/*#__PURE__*/ React__default["default"].createElement(TransactionStep, {
 					state: state,
-					onConfirm: () => setActiveTab((current) => current - 2),
-					onBack: () => setActiveTab((current) => current - 1),
+					dispatch: dispatch,
+					onBack: goBack,
 				}),
 			),
 		),

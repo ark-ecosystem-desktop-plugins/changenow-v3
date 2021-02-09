@@ -19,7 +19,8 @@
 		"permissions": [
 			"LAUNCH",
 			"HTTP",
-			"PROFILE"
+			"PROFILE",
+			"TIMERS"
 		],
 		"minimumVersion": "3.0"
 	},

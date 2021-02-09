@@ -1,10 +1,48 @@
 import React from "react";
 import { CopyIcon } from "../icons/CopyIcon";
+import { useExchange } from "../hooks/use-exchange";
+import { useWalletContext } from "../context/WalletProvider";
+import { statuses, finishedStatuses } from "../contants";
+import { CheckIcon } from "../icons/CheckIcon";
 
-const { Box } = globalThis.ark.Components;
+const { Box, Spinner } = globalThis.ark.Components;
 
-export const TransactionStep = ({ state, onRestart }) => {
+export const TransactionStep = ({ state, dispatch, onRestart }) => {
 	const { amount, transaction } = state;
+	const { getTransactionStatus } = useExchange();
+	const walletContext = useWalletContext();
+	const timerRef = React.useRef();
+
+	const isDepositConfirmed = transaction.status === statuses.exchanging || transaction.status === statuses.sending;
+	const isSending = transaction.status === statuses.sending;
+	const isExchangeFinished = React.useMemo(() => finishedStatuses.includes(transaction.status), [transaction.status]);
+	const isExchangeFinishedSuccess = transaction.status === statuses.finished;
+
+	const transactionId = transaction.id;
+
+	const verifyTransactionStatus = React.useCallback(async () => {
+		try {
+			const response = await getTransactionStatus(transactionId);
+			dispatch({ type: "status", status: response.status });
+		} catch (error) {
+			console.error(error);
+		}
+	}, [transactionId]);
+
+	React.useEffect(() => {
+		if (isExchangeFinished && timerRef.current) {
+			clearInterval(timerRef.current);
+		}
+	}, [isExchangeFinished]);
+
+	React.useEffect(() => {
+		const timer = walletContext.timers().setInterval(() => verifyTransactionStatus(), 10000);
+		timerRef.current = timer;
+
+		return () => {
+			walletContext.timers().clearInterval(timerRef.current);
+		};
+	}, [verifyTransactionStatus]);
 
 	return (
 		<div className="inline-flex flex-col space-y-4 w-full">
@@ -68,10 +106,50 @@ export const TransactionStep = ({ state, onRestart }) => {
 			) : null}
 
 			<ul className="flex space-x-2">
-				<li className="flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1">Awaiting deposit</li>
-				<li className="flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1">Exchanging</li>
-				<li className="flex-1 border-2 border-theme-secondary-200 text-center px-2 py-1">
-					Sending to your wallet
+				<li className="flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1">
+					{isDepositConfirmed ? (
+						<div className="flex items-center space-x-2">
+							<Box as="span" styled={{ color: "#3bee81" }}>
+								<CheckIcon className="w-6 h-6" />
+							</Box>
+							<span>Deposit received</span>
+						</div>
+					) : (
+						<div className="flex items-center space-x-2">
+							<Spinner size="sm" />
+							<span>Awaiting deposit</span>
+						</div>
+					)}
+				</li>
+				<li className="flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1">
+					{isSending ? (
+						<div className="flex items-center space-x-2">
+							<Box as="span" styled={{ color: "#3bee81" }}>
+								<CheckIcon className="w-6 h-6" />
+							</Box>
+							<span>Exchanged</span>
+						</div>
+					) : (
+						<div className="flex items-center space-x-2">
+							{isDepositConfirmed ? <Spinner size="sm" /> : null}
+							<span>Exchanging</span>
+						</div>
+					)}
+				</li>
+				<li className="flex-1 flex items-center justify-center border-2 border-theme-secondary-200 px-2 py-1">
+					{isExchangeFinishedSuccess ? (
+						<div className="flex items-center space-x-2">
+							<Box as="span" styled={{ color: "#3bee81" }}>
+								<CheckIcon className="w-6 h-6" />
+							</Box>
+							<span>Sent to your wallet</span>
+						</div>
+					) : (
+						<div className="flex items-center space-x-2">
+							{isSending ? <Spinner size="sm" /> : null}
+							<span>Sending to your wallet</span>
+						</div>
+					)}
 				</li>
 			</ul>
 
