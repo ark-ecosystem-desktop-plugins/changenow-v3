@@ -197,8 +197,20 @@ const {
 } = globalThis.ark;
 const {
   Box: Box$1,
-  Spinner
+  Spinner,
+  InputCurrency
 } = Components$1;
+const InputAmount = /*#__PURE__*/React__default['default'].forwardRef((props, ref) => {
+  return /*#__PURE__*/React__default['default'].createElement(Box$1, _extends({
+    as: "input",
+    type: "text",
+    className: "pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0",
+    styled: {
+      height: "70px"
+    },
+    ref: ref
+  }, props));
+});
 const InputConvert = ({
   state,
   dispatch,
@@ -292,17 +304,12 @@ const InputConvert = ({
     }
   }, /*#__PURE__*/React__default['default'].createElement("label", {
     className: "text-theme-secondary-text absolute top-1 left-5 text-sm"
-  }, "You send"), /*#__PURE__*/React__default['default'].createElement(Box$1, {
-    as: "input",
-    type: "text",
-    className: "pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0",
-    styled: {
-      height: "70px"
-    },
+  }, "You send"), /*#__PURE__*/React__default['default'].createElement(InputCurrency, {
+    as: InputAmount,
     value: amount,
-    onChange: evt => dispatch({
+    onChange: currency => dispatch({
       type: "amount",
-      amount: evt.target.value
+      amount: currency.value / 1e8
     })
   }), /*#__PURE__*/React__default['default'].createElement("button", {
     type: "button",

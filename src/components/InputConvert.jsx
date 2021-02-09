@@ -5,7 +5,20 @@ import { ChevronDownIcon } from "../icons/ChevronDownIcon";
 import { SwitchIcon } from "../icons/SwitchIcon";
 
 const { Components } = globalThis.ark;
-const { Box, Spinner } = Components;
+const { Box, Spinner, InputCurrency } = Components;
+
+const InputAmount = React.forwardRef((props, ref) => {
+	return (
+		<Box
+			as="input"
+			type="text"
+			className="pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
+			styled={{ height: "70px" }}
+			ref={ref}
+			{...props}
+		/>
+	)
+})
 
 export const InputConvert = ({ state, dispatch, isTransparent }) => {
 	const { amount, from, to, currencies, estimatedAmount, minAmount } = state;
@@ -94,13 +107,10 @@ export const InputConvert = ({ state, dispatch, isTransparent }) => {
 				styled={{ backgroundColor: isTransparent ? "transparent" : "#3D3D70" }}
 			>
 				<label className="text-theme-secondary-text absolute top-1 left-5 text-sm">You send</label>
-				<Box
-					as="input"
-					type="text"
-					className="pt-4 pl-5 pb-0 bg-transparent border-0 focus:outline-none text-xl w-full font-medium focus:ring-0"
-					styled={{ height: "70px" }}
+				<InputCurrency
+					as={InputAmount}
 					value={amount}
-					onChange={(evt) => dispatch({ type: "amount", amount: evt.target.value })}
+					onChange={currency => dispatch({ type: "amount", amount: currency.value/1e8 })}
 				/>
 				<button
 					type="button"
