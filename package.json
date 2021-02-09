@@ -20,7 +20,8 @@
 			"LAUNCH",
 			"HTTP",
 			"PROFILE",
-			"TIMERS"
+			"TIMERS",
+			"STORE"
 		],
 		"minimumVersion": "3.0"
 	},

@@ -81,10 +81,14 @@ const swapReducer = (state, action) => {
 		case "restart": {
 			return {
 				...state,
-				transaction: undefined,
+				activeTab: 1,
 				refundAddress: undefined,
-				recipient: undefined,
+				recipient: "",
+				transaction: {}
 			};
+		}
+		case "restore": {
+			return action.state;
 		}
 		case "status": {
 			return {
@@ -95,7 +99,14 @@ const swapReducer = (state, action) => {
 				},
 			};
 		}
+		case "activeTab": {
+			return {
+				...state,
+				activeTab: action.activeTab,
+			};
+		}
 	}
 };
 
-export const useBuilder = () => React.useReducer(swapReducer, { currencies: [], recipient: "", amount: 1 });
+const defaultState = { currencies: [], recipient: "", amount: 1, activeTab: 1 };
+export const useBuilder = () => React.useReducer(swapReducer, defaultState);

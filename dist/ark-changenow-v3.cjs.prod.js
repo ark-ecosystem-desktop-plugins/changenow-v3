@@ -931,10 +931,16 @@ const swapReducer = (state, action) => {
     case "restart":
       {
         return { ...state,
-          transaction: undefined,
+          activeTab: 1,
           refundAddress: undefined,
-          recipient: undefined
+          recipient: "",
+          transaction: {}
         };
+      }
+
+    case "restore":
+      {
+        return action.state;
       }
 
     case "status":
@@ -945,14 +951,23 @@ const swapReducer = (state, action) => {
           }
         };
       }
+
+    case "activeTab":
+      {
+        return { ...state,
+          activeTab: action.activeTab
+        };
+      }
   }
 };
 
-const useBuilder = () => React__default['default'].useReducer(swapReducer, {
+const defaultState = {
   currencies: [],
   recipient: "",
-  amount: 1
-});
+  amount: 1,
+  activeTab: 1
+};
+const useBuilder = () => React__default['default'].useReducer(swapReducer, defaultState);
 
 const CopyIcon = props => {
   return /*#__PURE__*/React__default['default'].createElement("svg", _extends({
@@ -1001,8 +1016,7 @@ const {
 } = globalThis.ark.Components;
 const TransactionStep = ({
   state,
-  dispatch,
-  onRestart
+  dispatch
 }) => {
   const {
     amount,
@@ -1029,6 +1043,15 @@ const TransactionStep = ({
       console.error(error);
     }
   }, [transactionId]);
+
+  const onRestart = () => {
+    walletContext.store().data().forget("state");
+    walletContext.store().persist();
+    dispatch({
+      type: "restart"
+    });
+  };
+
   React__default['default'].useEffect(() => {
     if (isExchangeFinished && timerRef.current) {
       clearInterval(timerRef.current);
@@ -1152,8 +1175,8 @@ const MainPage = () => {
     getAllCurrencies
   } = useExchange();
   const [state, dispatch] = useBuilder();
+  const walletContext = useWalletContext();
   const [isLoading, setIsLoading] = React__default['default'].useState(false);
-  const [activeTab, setActiveTab] = React__default['default'].useState(1);
   const fetchCurrencies = React__default['default'].useCallback(async () => {
     const currencies = await getAllCurrencies();
     dispatch({
@@ -1162,10 +1185,30 @@ const MainPage = () => {
     });
   }, []);
 
-  const goNext = () => setActiveTab(current => current + 1);
+  const goNext = () => dispatch({
+    type: "activeTab",
+    activeTab: state.activeTab + 1
+  });
 
-  const goBack = () => setActiveTab(current => current - 1);
+  const goBack = () => dispatch({
+    type: "activeTab",
+    activeTab: state.activeTab - 1
+  });
 
+  React__default['default'].useLayoutEffect(() => {
+    const stored = walletContext.store().data().get("state");
+
+    if (stored) {
+      dispatch({
+        type: "restore",
+        state: stored
+      });
+    }
+  }, []);
+  React__default['default'].useEffect(() => {
+    walletContext.store().data().set("state", state);
+    walletContext.store().persist();
+  }, [state]);
   React__default['default'].useEffect(() => {
     const initialize = async () => {
       setIsLoading(true);
@@ -1176,7 +1219,7 @@ const MainPage = () => {
     initialize();
   }, []);
   return /*#__PURE__*/React__default['default'].createElement(Tabs, {
-    activeId: activeTab,
+    activeId: state.activeTab,
     className: "flex-1 flex"
   }, /*#__PURE__*/React__default['default'].createElement(TabPanel, {
     tabId: 1,

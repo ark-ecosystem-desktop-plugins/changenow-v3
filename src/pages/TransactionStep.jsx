@@ -7,7 +7,7 @@ import { CheckIcon } from "../icons/CheckIcon";
 
 const { Box, Spinner, Clipboard } = globalThis.ark.Components;
 
-export const TransactionStep = ({ state, dispatch, onRestart }) => {
+export const TransactionStep = ({ state, dispatch }) => {
 	const { amount, transaction } = state;
 	const { getTransactionStatus } = useExchange();
 	const walletContext = useWalletContext();
@@ -28,6 +28,12 @@ export const TransactionStep = ({ state, dispatch, onRestart }) => {
 			console.error(error);
 		}
 	}, [transactionId]);
+
+	const onRestart = () => {
+		walletContext.store().data().forget("state");
+		walletContext.store().persist();
+		dispatch({ type: "restart" });
+	}
 
 	React.useEffect(() => {
 		if (isExchangeFinished && timerRef.current) {

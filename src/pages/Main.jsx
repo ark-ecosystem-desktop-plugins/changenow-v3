@@ -10,6 +10,7 @@ import { StepLayout } from "../layouts/StepLayout";
 import { useExchange } from "../hooks/use-exchange";
 import { useBuilder } from "../hooks/use-builder";
 import { TransactionStep } from "./TransactionStep";
+import { useWalletContext } from "../context/WalletProvider";
 
 const { Components } = globalThis.ark;
 const { Tabs, TabPanel } = Components;
@@ -17,17 +18,29 @@ const { Tabs, TabPanel } = Components;
 export const MainPage = () => {
 	const { getAllCurrencies } = useExchange();
 	const [state, dispatch] = useBuilder();
+	const walletContext = useWalletContext();
 
 	const [isLoading, setIsLoading] = React.useState(false);
-	const [activeTab, setActiveTab] = React.useState(1);
 
 	const fetchCurrencies = React.useCallback(async () => {
 		const currencies = await getAllCurrencies();
 		dispatch({ type: "currencies", currencies });
 	}, []);
 
-	const goNext = () => setActiveTab((current) => current + 1);
-	const goBack = () => setActiveTab((current) => current - 1);
+	const goNext = () => dispatch({ type: "activeTab", activeTab: state.activeTab + 1 });
+	const goBack = () => dispatch({ type: "activeTab", activeTab: state.activeTab - 1 });
+
+	React.useLayoutEffect(() => {
+		const stored = walletContext.store().data().get("state");
+		if (stored) {
+			dispatch({ type: "restore", state: stored });
+		}
+	}, []);
+
+	React.useEffect(() => {
+		walletContext.store().data().set("state", state);
+		walletContext.store().persist();
+	}, [state]);
 
 	React.useEffect(() => {
 		const initialize = async () => {
@@ -40,7 +53,7 @@ export const MainPage = () => {
 	}, []);
 
 	return (
-		<Tabs activeId={activeTab} className="flex-1 flex">
+		<Tabs activeId={state.activeTab} className="flex-1 flex">
 			<TabPanel tabId={1} className="flex-1">
 				<MainLayout isLoading={isLoading}>
 					<FormStep state={state} dispatch={dispatch} onSubmit={goNext} />
