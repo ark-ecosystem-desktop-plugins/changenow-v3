@@ -75,7 +75,7 @@ export const MainPage = () => {
 
 			<TabPanel tabId={4} className="flex-1 flex items-center justify-center">
 				<StepLayout>
-					<TransactionStep state={state} dispatch={dispatch} onBack={goBack} />
+					<TransactionStep state={state} dispatch={dispatch} onBack={goBack} onFinished={goNext} />
 				</StepLayout>
 			</TabPanel>
 

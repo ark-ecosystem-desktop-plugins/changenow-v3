@@ -7,7 +7,7 @@ import { CheckCircleIcon } from "../icons/CheckCircleIcon";
 
 const { Box, Spinner, Clipboard } = globalThis.ark.Components;
 
-export const TransactionStep = ({ state, dispatch }) => {
+export const TransactionStep = ({ state, dispatch, onFinished }) => {
 	const { amount, transaction } = state;
 	const { getTransactionStatus } = useExchange();
 	const walletContext = useWalletContext();
@@ -23,7 +23,7 @@ export const TransactionStep = ({ state, dispatch }) => {
 	const verifyTransactionStatus = React.useCallback(async () => {
 		try {
 			const response = await getTransactionStatus(transactionId);
-			dispatch({ type: "status", payload: { status: response.status } });
+			dispatch({ type: "status", payload: response });
 		} catch (error) {
 			console.error(error);
 		}
@@ -36,8 +36,14 @@ export const TransactionStep = ({ state, dispatch }) => {
 	};
 
 	React.useEffect(() => {
+		if (isExchangeFinishedSuccess) {
+			onFinished?.();
+		}
+	}, [isExchangeFinishedSuccess]);
+
+	React.useEffect(() => {
 		if (isExchangeFinished && timerRef.current) {
-			clearInterval(timerRef.current);
+			walletContext.timers().clearInterval(timerRef.current);
 		}
 	}, [isExchangeFinished]);
 
